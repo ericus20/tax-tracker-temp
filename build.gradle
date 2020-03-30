@@ -1,0 +1,128 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'checkstyle'
+    id 'eclipse'
+    id 'java'
+    id 'idea'
+}
+
+group = 'com.umdvita'
+version = '1.1.0-SNAPSHOT'
+description = 'A web application to help clients track tax returns.'
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.11.754'
+
+    // Apache commons
+    implementation 'commons-io:commons-io:2.6'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.itextpdf:itextpdf:5.5.13.1'
+
+    // MapStruct for Object Mapping
+    implementation 'org.mapstruct:mapstruct:1.3.1.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.3.1.Final'
+
+
+    // Annotation processors and Lombok
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Database
+    implementation 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'com.oracle.ojdbc:ojdbc8'
+
+    // caching
+    implementation 'org.hibernate:hibernate-jcache'
+    implementation 'org.ehcache:ehcache'
+    implementation 'org.ehcache:ehcache-transactions'
+
+    // Webjars
+    implementation 'org.webjars:bootstrap:4.4.1-1'
+    implementation 'org.webjars:jquery:3.4.1'
+    implementation 'org.webjars:webjars-locator:0.39'
+
+    implementation files('libs/hypersistence-optimizer-2.0.2.jar')
+
+    // Testing
+    testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.1.13'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// Gradle wrapper will be supported adn provided if no Gradle is found locally
+wrapper {
+    gradleVersion = '6.3'
+}
+
+test {
+    systemProperty("spring.profiles.active", "test")
+}
+
+bootRun {
+    systemProperty("spring.profiles.active", project.properties.get("spring.profiles.active"))
+}
+
+bootJar {
+    from('src/main/resources/ebextensions') {
+        into '.ebextensions'
+    }
+}
+
+task zip(type: Zip, dependsOn: bootJar) {
+    from ('src/main/resources/ebextensions') {
+        into '.ebextensions'
+    }
+    from (jar.outputs.files) {
+        into '/'
+    }
+    destinationDirectory = project.buildDir
+}
+
+// Checkstyle task to disable xml reports and load config file
+tasks.withType(Checkstyle) {
+    configFile file("${project.rootDir}/config/checkstyle.xml")
+    include '**/*.java'
+    exclude '**/gen/**'
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    classpath = files()
+}
