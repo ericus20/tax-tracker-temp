@@ -14,6 +14,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -39,7 +40,7 @@ public class DatabaseSeeder implements CommandLineRunner {
   public static final int NUMBER_OF_ADMIN_USERS = 1;
   public static final int NUMBER_OF_LEADERS = 10;
   public static final int NUMBER_OF_VOLUNTEERS = 0;
-  public static final int NUMBER_OF_TEST_USERS = 200;
+  public static final int NUMBER_OF_TEST_USERS = 20;
 
   // turn on/off initializing the database with test data
   private static final boolean ENABLE_TEST_DATA = true;
@@ -129,14 +130,17 @@ public class DatabaseSeeder implements CommandLineRunner {
         persistUser(ADMIN_USERNAME + index, properties.getWebmasterPassword(), true, RoleType.ADMIN);
       });
     } else {
+      List<UserDto> users = new ArrayList<>();
       IntStream
               .range(0, numberOfUsersToCreate)
               .parallel()
               .forEach(index -> {
                 String username = index == 1 ? TEST_USERNAME : TEST_USERNAME + index;
                 boolean nextBoolean = ThreadLocalRandom.current().nextBoolean();
-                persistUser(username, properties.getTestUserPassword(), nextBoolean, RoleType.USER);
+                UserDto testUser = UserUtility.createTestUser(username, properties.getTestUserPassword(), nextBoolean, nextBoolean);
+                users.add(testUser);
               });
+      userService.createUsers(users);
     }
   }
 

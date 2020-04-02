@@ -10,7 +10,6 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
@@ -46,8 +45,6 @@ public class PasswordToken extends BaseEntity implements Serializable {
    */
   public static final int DEFAULT_EXPIRY_TIME_IN_MINUTES = 30;
 
-  @Id
-  private Long id;
 
   /**
    * The token for password reset.
@@ -67,8 +64,8 @@ public class PasswordToken extends BaseEntity implements Serializable {
    * User owning this token.
    */
   @MapsId
-  @JoinColumn(name = "id")
   @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "id", unique = true)
   private User user;
 
   /**

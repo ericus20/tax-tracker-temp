@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -31,11 +33,25 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EqualsAndHashCode(of = {"version"})
 @EntityListeners(AuditingEntityListener.class)
-public class BaseEntity implements Serializable {
+public class BaseEntity implements Serializable, Identifiable<Long> {
   private static final long serialVersionUID = -1106817480796833080L;
 
+  /**
+   * Sequence Style Generator to auto generate ID based on the choices in
+   * the parameters.
+   */
+  @GenericGenerator(
+          name = "TaxTrackerSequenceGenerator",
+          strategy = "com.umdvita.taxtracker.backend.persistence.domain.base.AssignedSequenceStyleGenerator",
+          parameters = {
+                  @Parameter(name = "sequence_name", value = "TaxTrackerSequence"),
+                  @Parameter(name = "initial_value", value = "1"),
+                  @Parameter(name = "increment_size", value = "1")
+          }
+  )
+
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TaxTrackerSequenceGenerator")
   private Long id;
 
   /**

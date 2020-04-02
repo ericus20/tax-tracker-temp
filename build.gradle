@@ -27,6 +27,10 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    mapstructVersion = "1.3.1.Final"
+}
+
 dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -46,8 +50,8 @@ dependencies {
     implementation 'com.itextpdf:itextpdf:5.5.13.1'
 
     // MapStruct for Object Mapping
-    implementation 'org.mapstruct:mapstruct:1.3.1.Final'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.3.1.Final'
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
 
     // Annotation processors and Lombok

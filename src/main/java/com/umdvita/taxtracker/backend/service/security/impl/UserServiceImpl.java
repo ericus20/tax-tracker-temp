@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -105,6 +106,28 @@ public class UserServiceImpl implements UserService {
   @Transactional
   public UserDto createUser(UserDto userDto) {
     return createUser(userDto, null);
+  }
+
+  /**
+   * Creates the list of users provided in batch.
+   *
+   * @param userDtos the userDtos
+   * @return list of created userDtos
+   */
+  @Override
+  @Transactional
+  public List<UserDto> createUsers(List<UserDto> userDtos) {
+    List<User> users = new ArrayList<>();
+    userDtos.forEach(userDto -> {
+      if (!userRepository.existsByEmail(userDto.getEmail())) {
+        User localUser = UserUtility.getUserFromDto(userDto);
+        localUser.addUserHistory(new UserHistory(UserHistoryType.CREATED, localUser));
+        localUser.setRoles(Collections.singleton(new Role(RoleType.USER)));
+        users.add(localUser);
+      }
+    });
+    List<User> savedUsers = userRepository.saveAll(users);
+    return UserUtility.getUserDto(savedUsers);
   }
 
   /**

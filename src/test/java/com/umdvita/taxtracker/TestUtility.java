@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Component
-@ActiveProfiles(value = {ProfileType.TEST})
+@ActiveProfiles(value = {ProfileType.PROD})
 public class TestUtility {
 
   public static final String[] ENTITY_GLOBAL_FIELDS_TO_IGNORE = {

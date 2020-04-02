@@ -199,17 +199,30 @@ public abstract class UserUtility {
    * Transfers data from list of entity to returnable list.
    *
    * @param storedUserDetails stored user details
+   * @param sort if the collection should be sorted
    * @return list of user dto
    */
-  public static List<UserDto> getUserDto(List<User> storedUserDetails) {
+  public static List<UserDto> getUserDto(List<User> storedUserDetails, boolean sort) {
     InputValidationUtility.validateInputs(storedUserDetails);
     List<UserDto> returnValue = new ArrayList<>();
     for (User storedUserDetail : storedUserDetails) {
       returnValue.add(getUserDto(storedUserDetail));
     }
-    returnValue.sort(Comparator.comparing(UserDto::getFirstName, Comparator.nullsLast(Comparator.naturalOrder()))
-            .thenComparing(UserDto::getLastName, Comparator.nullsLast(Comparator.naturalOrder())));
+    if (sort) {
+      returnValue.sort(Comparator.comparing(UserDto::getFirstName, Comparator.nullsLast(Comparator.naturalOrder()))
+              .thenComparing(UserDto::getLastName, Comparator.nullsLast(Comparator.naturalOrder())));
+    }
     return returnValue;
+  }
+
+  /**
+   * Transfers data from list of entity to returnable list.
+   *
+   * @param storedUserDetails stored user details
+   * @return list of user dto
+   */
+  public static List<UserDto> getUserDto(List<User> storedUserDetails) {
+    return getUserDto(storedUserDetails, false);
   }
 
   /**
