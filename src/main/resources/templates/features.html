@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<!-- Head -->
+<th:block th:replace="common/template :: common-head(title='..:: Tax Tracker | Features ::..')"/>
+
+<body>
+
+<!--[if lte IE 9]>
+<th:block th:replace="common/template :: common-ie-check">
+<![endif]-->
+
+<!-- Add your site or application content here -->
+
+<div class="fakeloader"></div>
+
+<!-- Main wrapper -->
+<div class="wrapper" id="wrapper">
+
+    <!-- Start: Header Section -->
+    <header th:replace="common/template :: common-header"></header>
+    <!-- End: Header Section -->
+
+    <!-- Breadcrumb Area -->
+    <div th:replace="common/template :: common-breadcrumb('Features', 'We Offer Services That Work ')"></div>
+    <!--// Breadcrumb Area -->
+
+    <!-- Page Conent -->
+    <main class="page-content">
+
+        <!-- Features Area -->
+        <section class="cr-section pg-features-area section-padding--xxs" id="pg-features-area">
+            <div class="container">
+                <div class="pg-features">
+                    <div class="row align-items-end">
+                        <div class="col-xl-8 col-lg-7 order-2 order-lg-1">
+                            <div class="pg-features__description">
+									<span class="pg-features__icon">
+										<i class="flaticon-shield"></i>
+									</span>
+                                <div class="pg-features__content">
+                                    <h3>ENSURE SECURITY</h3>
+                                    <p>VITA Smith volunteers treat their clients’ documents as if
+                                        it were their own. For the upcoming 2019 tax season, beginning
+                                        February 2020, we develop and maintain a new website that is
+                                        running in our own private server to ensure the security of clients’
+                                        personal information from start to finish
+                                    </p>
+                                    <p>Our website uses Amazon Web Services (AWS) to store clients’ uploaded
+                                        documents to keep them safe. Any documents that are downloaded onto a
+                                        computer are securely erased using high quality, open source software.
+                                    </p>
+                                    <p>We only use clients’ information for tax return preparation purpose and
+                                        won’t share it to anyone else without clients’ consent. We only keep
+                                        clients’ information on file until the end of the next spring semester,
+                                        then we will take secure and safe procedures to delete the information
+                                        <span id="expert-team-section"></span>
+                                        at the set date. In addition, we will be using fully upgraded communication
+                                        systems -- iMessage, WhatsApp and secured emails to communicate with clients.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-5 wow fadeInRight order-1 order-lg-2">
+                            <div class="pg-features__thumb">
+                                <img alt="feature thumb 1"
+                                     th:src="@{/images/feature/DXx6lL2VQAAfM95.jpg}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pg-features">
+                    <div class="row align-items-end">
+                        <div class="col-xl-4 col-lg-5 wow fadeInLeft even-space">
+                            <div class="pg-features__thumb">
+                                <img alt="feature thumb 1"
+                                     th:src="@{/images/feature/tax-assistance.jpg}">
+                            </div>
+                        </div>
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="pg-features__description">
+									<span class="pg-features__icon">
+										<i class="flaticon-team"></i>
+									</span>
+                                <div class="pg-features__content">
+                                    <h3>Expert Team</h3>
+                                    <p>All our volunteers are students from Robert H. Smith School of Business
+                                        at the University of Maryland. Our volunteers are certified by the IRS
+                                        in preparing returns and have training offered by program director Professor
+                                        Samuel Handwerger, TerpTax and MSLC
+                                    </p>
+                                    <p>
+                                        Besides, all our tax return services are free, and our clients have no need to
+                                        pay in whatever method. If someone utilize VITA Smith as a platform to boost his
+                                        or her own business, such as selling insurance, and even you feel uncomfortable
+                                        because of our volunteers, please let us know and we appreciate your
+                                        cooperation. All of us will always be committed to helping you with your tax
+                                        returns!
+                                    </p>
+                                    <p>
+                                        Our number one priority, even above client satisfaction, is to stay in
+                                        compliance with the law. As such, we do not tolerate discrimination based on
+                                        sex, race, color, national origin, reprisal, disability, or age. If you believe
+                                        that we have violated our core principal, please contact
+                                        eeo.external.civil.rights@IRS.Gov.
+                                    </p>
+                                    <p>
+                                        It is an external email that the IRS monitors and we will not be able to
+                                        view. In addition to not tolerating discrimination, we also hope to serve you
+                                        with the highest moral and ethical character. If you believe that there is
+                                        unethical behavior occurring, please report it to the IRS at wi.voltax@IRS.Gov.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--// Features Area -->
+
+    </main>
+    <!-- //Page Conent -->
+
+    <!-- Common Footer Area -->
+    <footer th:replace="common/template :: common-footer"></footer>
+    <!-- //Footer Area -->
+
+</div>
+<!-- //Main wrapper -->
+
+<!--Common Body Scripts-->
+<div th:replace="common/template :: common-scripts"></div>
+
+</body>
+
+
+</html>

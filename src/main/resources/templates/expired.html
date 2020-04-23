@@ -1,0 +1,63 @@
+<!doctype html>
+<html class="no-js" lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+
+<!-- Head -->
+<th:block th:replace="common/template :: common-head(title='..:: Tax Tracker | Session Expired ::..')"/>
+
+<body>
+
+<!--[if lte IE 9]>
+<th:block th:replace="common/template :: common-ie-check"/>
+<![endif]-->
+
+<div class="fakeloader"></div>
+
+<!-- Main wrapper -->
+<div class="wrapper" id="wrapper">
+
+    <!-- Start: Header Section -->
+    <header th:replace="common/template :: common-header"></header>
+    <!-- End: Header Section -->
+
+    <!-- Breadcrumb Area -->
+    <div th:replace="common/template :: common-breadcrumb('See you soon', 'We are Master Service Learning Club (MSLC) ')"></div>
+    <!--// Breadcrumb Area -->
+
+    <!-- Page Conent -->
+    <main class="page-content">
+
+        <!-- Session Expired Area -->
+        <section class="cr-section section-padding--xxs bg--white" id="about-area">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-10 offset-lg-1">
+                        <div class="about-area__content2 section-padding-top--xs text-center">
+                            <h1 class="cd-headline cx-heading slide">SESSION EXPIRED!</h1>
+                            <a class="cr-btn" th:href="@{/login}">
+                                <span>Login</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- //Session Expired Area -->
+
+    </main>
+    <!-- //Page Conent -->
+
+    <!-- Common Footer Area -->
+    <footer th:replace="common/template :: common-footer"></footer>
+    <!-- //Footer Area -->
+
+</div>
+<!-- //Main wrapper -->
+
+<!--Common Body Scripts-->
+<div th:replace="common/template :: common-scripts"></div>
+
+</body>
+
+
+</html>

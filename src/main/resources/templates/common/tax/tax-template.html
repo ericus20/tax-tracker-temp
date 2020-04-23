@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+
+
+<th:block th:fragment="common-head (title)">
+
+    <!--/*@thymesVar id="timeline" type="java.lang.Boolean"*/-->
+    <th:block th:if="${timeline}">
+        <!-- page css used in dashboard to display tax history -->
+        <link rel="stylesheet" th:href="@{/vendor/dist/css/pages/timeline-vertical-horizontal.css}" type="text/css">
+        <link rel="stylesheet" th:href="@{/vendor/dist/css/pages/tab-page.css}" type="text/css">
+    </th:block>
+
+    <!--/*@thymesVar id="steps" type="java.lang.Boolean"*/-->
+    <th:block th:if="${steps}">
+        <link rel="stylesheet" th:href="@{/vendor/assets/node_modules/wizard/steps.css}" type="text/css">
+    </th:block>
+
+    <!--/*@thymesVar id="calendar" type="java.lang.Boolean"*/-->
+    <th:block th:if="${calendar}">
+        <!-- Calendar CSS -->
+        <link rel="stylesheet" th:href="@{/vendor/assets/node_modules/calendar/dist/fullcalendar.css}" type="text/css">
+    </th:block>
+
+    <!--/*@thymesVar id="sweetAlert" type="java.lang.Boolean"*/-->
+    <th:block th:if="${sweetAlert}">
+        <!--alerts CSS -->
+        <link rel="stylesheet" th:href="@{/vendor/assets/node_modules/sweetalert2/dist/sweetalert2.min.css}"
+              type="text/css">
+    </th:block>
+
+    <!--/*@thymesVar id="dropzone" type="java.lang.Boolean"*/-->
+    <th:block th:if="${dropzone}">
+        <!-- Dropzone css -->
+        <link rel="stylesheet" th:href="@{/vendor/assets/node_modules/dropzone-master/dist/dropzone.css}"
+              type="text/css"/>
+    </th:block>
+
+    <!--/*@thymesVar id="footable" type="java.lang.Boolean"*/-->
+    <th:block th:if="${footable}">
+        <!-- Footable CSS -->
+        <link rel="stylesheet" th:href="@{/vendor/assets/node_modules/footable/css/footable.bootstrap.min.css}"
+              type="text/css">
+        <!-- page css -->
+        <link rel="stylesheet" th:href="@{/vendor/dist/css/pages/footable-page.css}" type="text/css">
+    </th:block>
+
+    <!--/*@thymesVar id="bootstrapTable" type="java.lang.Boolean"*/-->
+    <th:block th:if="${bootstrapTable}">
+        <link rel="stylesheet" th:href="@{/vendor/assets/node_modules/bootstrap-table/dist/bootstrap-table.min.css}"
+              type="text/css"/>
+    </th:block>
+
+    <!-- Head -->
+    <th:block th:include="common/template :: common-head(title=${title}, taxTemplate=true)"/>
+
+</th:block>
+
+
+<body>
+
+
+<!-- Header -->
+<header class="topbar" th:fragment="common-header">
+    <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+        <!-- ============================================================== -->
+        <!-- Logo -->
+        <!-- ============================================================== -->
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}">
+                <!-- Logo icon --><b>
+                <i class="wi wi-sunset"></i>
+                <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                <!-- Dark Logo icon -->
+                <!--                <img alt="homepage" class="dark-logo" th:src="@{/vendor/assets/images/logo-icon.png}"/>-->
+                <!--                &lt;!&ndash; Light Logo icon &ndash;&gt;-->
+                <!--                <img alt="homepage" class="light-logo" th:src="@{/vendor/assets/images/logo-light-icon.png}"/>-->
+            </b>
+                <!--End Logo icon -->
+                <span class="hidden-xs"><span class="font-bold">MSLC &middot; TerpTax</span></span>
+            </a>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Logo -->
+        <!-- ============================================================== -->
+        <div class="navbar-collapse">
+            <!-- ============================================================== -->
+            <!-- toggle and nav items -->
+            <!-- ============================================================== -->
+            <ul class="navbar-nav mr-auto">
+                <!-- This is  -->
+                <li class="nav-item"><a class="nav-link nav-toggler d-block d-md-none waves-effect waves-dark"
+                                        href="javascript:void(0)"><i class="ti-menu"></i></a></li>
+                <li class="nav-item"><a
+                        class="nav-link sidebartoggler d-none d-lg-block d-md-block waves-effect waves-dark"
+                        href="javascript:void(0)"><i class="icon-menu"></i></a></li>
+                <!-- ============================================================== -->
+                <!-- Search -->
+                <!-- ============================================================== -->
+            </ul>
+            <!-- ============================================================== -->
+            <!-- User profile and search -->
+            <!-- ============================================================== -->
+            <ul class="navbar-nav my-lg-0">
+                <!-- ============================================================== -->
+
+                <!-- ============================================================== -->
+                <!-- End Comment -->
+                <!-- ============================================================== -->
+
+                <!-- ============================================================== -->
+                <!-- End Messages -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+
+                <!-- ============================================================== -->
+                <!-- End mega menu -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- User Profile -->
+                <!-- ============================================================== -->
+                <li class="nav-item dropdown u-pro">
+                    <a aria-expanded="false"
+                       aria-haspopup="true" class="nav-link dropdown-toggle waves-effect waves-dark profile-pic"
+                       data-toggle="dropdown"
+                       href="#"><img alt="user" class="" th:src="@{${profileImage}}">
+                        <span class="hidden-md-down color--white ml-2">
+                            <span sec:authentication="name" style="text-transform: capitalize;">John</span>&nbsp;<i
+                                class="fa fa-angle-down"></i>
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right animated flipInY">
+                        <a class="dropdown-item" th:href="@{/profile}"><i class="ti-user"></i> My Profile</a>
+                        <a class="dropdown-item" sec:authorize="hasRole('ROLE_USER')" th:href="@{/appointment/user}"><i class="ti-user"></i> My Appointments</a>
+                        <a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/appointment}"><i class="ti-user"></i> All Appointments</a>
+                        <a class="dropdown-item" sec:authorize="hasRole('ROLE_LEADER') and !hasRole('ROLE_ADMIN')" th:href="@{/leader/appointment}"><i class="ti-user"></i> All Appointments</a>
+                        <a class="dropdown-item" th:href="@{/logout}"><i class="fa fa-power-off"></i> Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<!-- //Header -->
+
+<!-- Preloader - style you can find in spinners.css -->
+<!-- ============================================================== -->
+<div class="preloader" th:fragment="common-preloader">
+    <div class="loader">
+        <div class="loader__figure"></div>
+        <p class="loader__label">MSLC</p>
+    </div>
+</div>
+
+
+<!-- Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->
+<aside class="left-sidebar" th:fragment="common-left-sidebar">
+    <!-- Sidebar scroll-->
+    <div class="scroll-sidebar">
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav">
+            <ul id="sidebarnav">
+                <li class="user-pro">
+                    <a aria-expanded="false" class="has-arrow waves-effect waves-dark" href="javascript:void(0)"><img
+                            alt="user-img" class="img-circle" th:src="@{${profileImage}}"><span class="hide-menu">
+
+                        <span th:if="${user}">
+                            <span th:if="${user.name}" th:text="${user.name}"></span>
+                            <span sec:authentication="name" style="text-transform: capitalize;"
+                                  th:unless="${user.name}"></span>
+                        </span>
+                        <span sec:authentication="name" style="text-transform: capitalize;"
+                              th:if="not ${user}">John</span></span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a th:href="@{/profile}"><i class="ti-user"></i> My Profile</a></li>
+                        <li><a sec:authorize="hasRole('ROLE_USER')" th:href="@{/appointment/user}"><i class="ti-user"></i> My Appointments</a></li>
+                        <li><a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/appointment}"><i class="ti-user"></i> All Appointments</a></li>
+                        <li><a sec:authorize="hasRole('ROLE_LEADER') and !hasRole('ROLE_ADMIN')" th:href="@{/leader/appointment}"><i class="ti-user"></i> All Appointments</a></li>
+                        <li><a th:href="@{/logout}"><i class="fa fa-power-off"></i> Logout</a></li>
+                    </ul>
+                </li>
+                <li><a class="waves-effect waves-dark" th:href="@{/tax/dashboard}"><i class="icon-speedometer"></i><span
+                        class="hide-menu">Dashboard</span></a>
+                </li>
+                <!-- User management link for admin -->
+                <li sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a aria-expanded="false" class="has-arrow waves-effect waves-dark" href="javascript:void(0)">
+                        <i class="icon-people"></i><span class="hide-menu">Manage Users</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a th:href="@{/admin/users}">All Users</a></li>
+                        <li><a th:href="@{/admin/users/admins}">View Agents</a></li>
+                        <li><a th:href="@{/admin/users/leaders}">View Leaders</a></li>
+                        <li><a th:href="@{/admin/users/tax-preparers}">View Volunteers</a></li>
+                        <li><a th:href="@{/admin/users/users}">View Clients</a></li>
+                    </ul>
+                </li>
+                <!-- Group management link for admin -->
+                <li sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a aria-expanded="false" class="has-arrow waves-effect waves-dark" href="javascript:void(0)">
+                        <i class="fas fa-users-cog"></i><span class="hide-menu">Manage Groups</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a th:href="@{/admin/groups}">All Groups</a></li>
+                        <li><a th:href="@{/admin/groups/manage}">Group Members</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a aria-expanded="false" class="has-arrow waves-effect waves-dark"
+                       href="javascript:void(0)"><i class="ti-files"></i><span class="hide-menu">File Management</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/tax/documents}">All Files</a></li>
+                        <li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/tax/documents/user}">Manage</a></li>
+                        <li sec:authorize="hasRole('ROLE_USER') and !hasAnyRole('ROLE_VOLUNTEER', 'ROLE_LEADER', 'ROLE_ADMIN')" th:unless="${(taxOwner == null)}">
+                            <a th:href="@{/tax/documents/pdf-forms}">Download Forms</a>
+                        </li>
+                        <li sec:authorize="hasAnyRole('ROLE_VOLUNTEER', 'ROLE_LEADER', 'ROLE_ADMIN')">
+                            <a th:href="@{/tax/documents/pdf-forms-for-client}">Download Forms</a>
+                        </li>
+                        <li><a th:href="@{/tax/documents/upload-tax-document}" th:unless="${(taxOwner == null)}">Upload Documents</a></li>
+                    </ul>
+                </li>
+
+                <!-- User section of links -->
+                <li sec:authorize="hasRole('ROLE_USER') and !hasAnyRole('ROLE_VOLUNTEER', 'ROLE_LEADER', 'ROLE_ADMIN')" th:if="${(taxOwner == null)}">
+                    <a aria-expanded="false" class="waves-effect waves-dark" th:href="@{/tax/start}">
+                        <i class="ti-layout-grid2"></i><span class="hide-menu">New Tax Returns</span></a>
+                </li>
+                <li sec:authorize="hasAnyRole('ROLE_VOLUNTEER', 'ROLE_LEADER', 'ROLE_ADMIN')">
+                    <a aria-expanded="false" class="has-arrow waves-effect waves-dark"
+                       href="javascript:void(0)"><i class="ti-layout-grid2"></i><span
+                            class="hide-menu">New Tax Returns</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li>
+                            <a aria-expanded="false" class="waves-effect waves-dark" th:href="@{/tax/start}">
+                                <span class="hide-menu">My Tax Returns</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a aria-expanded="false" class="waves-effect waves-dark" th:href="@{/tax/start/client}">
+                                <span class="hide-menu">For Client</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li sec:authorize="hasRole('ROLE_USER')" th:unless="${(taxOwner == null)}">
+                    <a aria-expanded="false" class="waves-effect waves-dark" th:href="@{/tax/status/year}">
+                        <i class="ti-pie-chart"></i><span class="hide-menu">Check Status</span>
+                    </a>
+                </li>
+                <li>
+                    <a aria-expanded="false" class="has-arrow waves-effect waves-dark"
+                       href="javascript:void(0)"><i class="far fa-calendar-alt"></i><span
+                            class="hide-menu">Appointments</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li sec:authorize="!hasAnyRole('ROLE_VOLUNTEER', 'ROLE_LEADER', 'ROLE_ADMIN')"><a
+                                th:href="@{/appointment}">New</a></li>
+                        <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/appointment/calendar-view}">Calendar View</a></li>
+                        <li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/appointment/user}">My Appointments</a>
+                        </li>
+                        <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/appointment/}">All Appointments</a></li>
+                        <li sec:authorize="hasRole('ROLE_LEADER') and !hasRole('ROLE_ADMIN')"><a th:href="@{/leader/appointment/}">All Appointments</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </nav>
+        <!-- End Sidebar navigation -->
+    </div>
+    <!-- End Sidebar scroll-->
+</aside>
+<!-- ============================================================== -->
+<!-- End Left Sidebar - style you can find in sidebar.scss  -->
+
+
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles" th:fragment="common-breadcrumb (title, page)">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor" th:text="${title}"></h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="link" th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item active" th:text="${page}"></li>
+            </ol>
+        </div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+
+
+<!-- Footer Area -->
+<footer class="footer-area fixed--footer" id="footer" th:fragment="common-footer">
+
+
+    <!-- Footer Copyright Area -->
+    <div class="footer-area__copyright bg--dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="copyright text-center h5">
+                        <p>&copy; COPYRIGHT, ALL RIGHTS RESERVED BY
+                            <span>Master Service Learning Club &middot; TerpTax</span> &middot;
+                            <a th:href="@{/copy/privacy-policy}" th:target="_blank">Privacy</a> &middot;
+                            <a th:href="@{/copy/terms-and-conditions}" th:target="_blank">Terms</a>
+
+                            <script>
+                                document.write(new Date().getFullYear().toString());
+                            </script>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--// Footer Copyright Area -->
+
+</footer>
+<!-- //Footer Area -->
+
+
+<div th:fragment="common-scripts">
+
+    <!--Common Body Scripts-->
+    <div th:include="common/template :: common-scripts(taxTemplate=true)"></div>
+
+    <!--/*@thymesVar id="dataTable" type="java.lang.Boolean"*/-->
+    <th:block th:if="${dataTable}">
+        <!-- This is data table -->
+        <script th:src="@{/vendor/assets/node_modules/datatables.net/js/jquery.dataTables.min.js}"></script>
+        <script th:src="@{/vendor/assets/node_modules/datatables.net-bs4/js/dataTables.responsive.min.js}"></script>
+    </th:block>
+
+    <!--/*@thymesVar id="exportDataTable" type="java.lang.Boolean"*/-->
+    <th:block th:if="${exportDataTable}">
+        <!-- start - This is for export functionality only -->
+        <script th:src="@{//cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js}"></script>
+        <script th:src="@{//cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js}"></script>
+        <script th:src="@{//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js}"></script>
+        <script th:src="@{//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js}"></script>
+        <script th:src="@{//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js}"></script>
+        <script th:src="@{//cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js}"></script>
+        <script th:src="@{//cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js}"></script>
+        <!-- end - This is for export functionality only -->
+    </th:block>
+
+    <!--/*@thymesVar id="steps" type="java.lang.Boolean"*/-->
+    <th:block th:if="${steps}">
+        <script th:src="@{/vendor/assets/node_modules/wizard/jquery.steps.min.js}"></script>
+        <script th:src="@{/vendor/assets/node_modules/wizard/jquery.validate.min.js}"></script>
+    </th:block>
+
+    <!--/*@thymesVar id="dropify" type="java.lang.Boolean"*/-->
+    <th:block th:if="${dropify}">
+        <!-- jQuery file upload -->
+        <script th:src="@{/vendor/assets/node_modules/dropify/dist/js/dropify.min.js}"></script>
+    </th:block>
+
+    <!--/*@thymesVar id="sweetAlert" type="java.lang.Boolean"*/-->
+    <th:block th:if="${sweetAlert}">
+        <script th:src="@{/vendor/assets/node_modules/sweetalert2/dist/sweetalert2.all.min.js}"></script>
+    </th:block>
+
+    <!--/*@thymesVar id="dropzone" type="java.lang.Boolean"*/-->
+    <th:block th:if="${dropzone}">
+        <script th:src="@{/vendor/assets/node_modules/dropzone-master/dist/dropzone.js}"></script>
+    </th:block>
+
+    <!--/*@thymesVar id="moment" type="java.lang.Boolean"*/-->
+    <th:block th:if="${moment}">
+        <script th:src="@{/vendor/assets/node_modules/moment/moment.js}"></script>
+    </th:block>
+
+    <!--/*@thymesVar id="footable" type="java.lang.Boolean"*/-->
+    <th:block th:if="${footable}">
+        <!-- Footable -->
+        <script th:src="@{/vendor/assets/node_modules/footable/js/footable.min.js}"></script>
+    </th:block>
+
+</div>
+
+
+</body>
+
+
+</html>

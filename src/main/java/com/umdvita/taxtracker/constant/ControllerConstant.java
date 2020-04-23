@@ -19,6 +19,15 @@ public abstract class ControllerConstant {
   public static final String WHAT_TO_BRING_URL_MAPPING = "/what-to-bring";
   public static final String MORE_ON_TAXES_URL_MAPPING = "/more-on-taxes";
 
+  public static final String SIGN_UP_URL_MAPPING = "/sign-up";
+  public static final String FORGOT_ROOT_MAPPING = "/user/forgot/";
+  public static final String SIGN_UP_VERIFY_URL_MAPPING = "/complete-sign-up";
+
+  public static final String ABOUT_US_URL = "/about-us";
+  public static final String COPY_ROOT_URL = "/copy";
+  public static final String PRIVACY_POLICY_URL = "/privacy-policy";
+  public static final String TERMS_AND_CONDITIONS_URL = "/terms-and-conditions";
+
   /**
    * View Name Constants.
    */
@@ -28,6 +37,10 @@ public abstract class ControllerConstant {
   public static final String MORE_ON_TAXES_VIEW_NAME = "more-on-taxes";
   public static final String LOGIN_VIEW_NAME = "user/login";
   public static final String EXPIRED_VIEW_NAME = "expired";
+
+  public static final String ABOUT_US_VIEW_NAME = "copy/about-us";
+  public static final String PRIVACY_VIEW_NAME = "copy/privacy-policy";
+  public static final String TERMS_AND_CONDITION_VIEW_NAME = "copy/terms-and-conditions";
 
   /**
    * URL Redirection Constants.
@@ -40,21 +53,6 @@ public abstract class ControllerConstant {
    * Model Key Constant for email success.
    */
   public static final String USER_REQUEST_MODEL_KEY_NAME = "userRequestModel";
-
-  /**
-   * Copy Controller URI Mappings.
-   */
-  public static final String ABOUT_US_URL = "/about-us";
-  public static final String COPY_ROOT_URL = "/copy";
-  public static final String PRIVACY_POLICY_URL = "/privacy-policy";
-  public static final String TERMS_AND_CONDITIONS_URL = "/terms-and-conditions";
-
-  /**
-   * Copy Controller View Names.
-   */
-  public static final String ABOUT_US_VIEW_NAME = "copy/about-us";
-  public static final String PRIVACY_VIEW_NAME = "copy/privacy-policy";
-  public static final String TERMS_AND_CONDITION_VIEW_NAME = "copy/terms-and-conditions";
 
   /**
    * Security Controller URI Mappings.

@@ -1,0 +1,98 @@
+<!doctype html>
+<html class="no-js" lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Head -->
+<th:block th:replace="common/template :: common-head(title='..:: Tax Tracker | What to bring ::..')"/>
+
+<body>
+
+<!--[if lte IE 9]>
+<th:block th:replace="common/template :: common-ie-check">
+<![endif]-->
+
+<div class="fakeloader"></div>
+
+<!-- Main wrapper -->
+<div class="wrapper" id="wrapper">
+
+    <!-- Start: Header Section -->
+    <header th:replace="common/template :: common-header"></header>
+    <!-- End: Header Section -->
+
+    <!-- Breadcrumb Area -->
+    <div th:replace="common/template :: common-breadcrumb('What to bring', 'What you need to know ')"></div>
+    <!--// Breadcrumb Area -->
+
+    <!-- Page Conent -->
+    <main class="page-content">
+
+        <!-- Page Service Area -->
+        <section class="cr-section pg-services-area section-padding--xxs" id="pg-services-area">
+
+            <!-- Pg Service Area Top -->
+            <div class="pg-services-area__description">
+                <div class="container">
+                    <div class="row">
+                        <div class="pg-services__details">
+                            <h4>CAN’T SOLVE YOUR TAX PROBLEM?</h4>
+                            <h3>WE PROVIDE BEST
+                                <span class="color--theme">SERVICES FOR YOU</span>
+                            </h3>
+                            <p>Please bring the digital versions of the following documents </p>
+                            <ul>
+
+                                <li>Photo ID</li>
+                                <li>Social ecurity card/ITIN letters for everyone on the return</li>
+                                <li>Wage and earning statements (Form W-2, W-2G, 1099-R,1099-Misc) from all employers
+                                </li>
+                                <li>Interest and dividend statements from banks (Forms 1099)</li>
+                                <li>Child care provider information (tax identifying number such as their Social
+                                    Security number or business Employer Identification Number)
+                                </li>
+                                <li>
+                                    Tuition Statement (Form 1098-T) and any other records of education-related
+                                    expenses (tuition, fees, books, etc.) (UMD students can request their 1098-T
+                                    <a th:href="@{https://billpay.umd.edu/Tax}">here</a>)
+                                </li>
+                                <li>Interest on student loans paid by the student</li>
+                                <li>Records of charitable donations, if any</li>
+                                <li>Health Insurance Statements (Forms 1095-A, 1095-B or 1095-C)</li>
+                                <li>Health Insurance Exemption Certificate, if received</li>
+                                <li>A copy of last year's federal and state returns, if available</li>
+                                <li>Bank account information (Bank name, account type, routing number, and account
+                                    number) if you prefer direct debit/ credit for tax due/ refund
+                                </li>
+
+                                <li><strong>INTERNATIONAL STUDENTS MUST ALSO PROVIDE</strong>
+                                    <p>Form 1042-S if you received a scholarship/ fellowship from the University OR
+                                        you are claiming a tax exemption due to a tax treaty
+                                    </p>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--// Pg Service Area Top -->
+
+        </section>
+        <!--// Page Service Area -->
+
+    </main>
+    <!-- //Page Conent -->
+
+    <!-- Common Footer Area -->
+    <footer th:replace="common/template :: common-footer"></footer>
+    <!-- //Footer Area -->
+
+</div>
+<!-- //Main wrapper -->
+
+<!--Common Body Scripts-->
+<div th:replace="common/template :: common-scripts"></div>
+
+</body>
+
+
+</html>

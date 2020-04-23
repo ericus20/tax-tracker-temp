@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Head -->
+<th:block th:replace="common/template :: common-head(title='..:: Tax Tracker | Contact ::..')"/>
+
+<body>
+
+<!--[if lte IE 9]>
+<th:block th:replace="common/template :: common-ie-check">
+<![endif]-->
+
+<div class="fakeloader"></div>
+
+<!-- Main wrapper -->
+<div class="wrapper" id="wrapper">
+
+    <!-- Start: Header Section -->
+    <header th:replace="common/template :: common-header"></header>
+    <!-- End: Header Section -->
+
+    <!-- Breadcrumb Area -->
+    <div th:replace="common/template :: common-breadcrumb('Contact Us', 'Our agents will provide you with maximum support ')"></div>
+    <!--// Breadcrumb Area -->
+
+    <!-- Page Conent -->
+    <main class="page-content">
+
+        <!-- Pg Contact -->
+        <div class="pg-contact bg--white">
+
+            <!-- Contact Form -->
+            <div class="pg-contact-form-area bg--white section-padding--xxs">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-7 col-12">
+                            <div class="pg-appintment">
+                                <div class="pg-appintment__title">
+                                    <h2>SEND A MESSAGE</h2>
+                                </div>
+                                <div class="pg-appintment__box">
+
+                                    <div class="alert alert-success alert-dismissible fade show"
+                                         role="alert"
+                                         th:if="${feedbackSuccess}">
+                                        <button aria-label="Close" class="close" data-dismiss="alert"
+                                                type="button">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <strong>Message submitted successfully!</strong>
+                                    </div>
+
+                                    <div class="alert alert-warning alert-dismissible fade show"
+                                         role="alert"
+                                         th:if="${feedbackError}">
+                                        <button aria-label="Close" class="close" data-dismiss="alert"
+                                                type="button">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <strong>Message could not be submitted at this time</strong>
+                                    </div>
+
+                                    <form id="contactForm" method="POST"
+                                          th:action="@{/contact}"
+                                          th:object="${feedback}">
+                                        <input th:field="*{email}" th:if="${user}" type="hidden">
+                                        <input th:field="*{name}" th:if="${user}" type="hidden">
+                                        <input th:field="*{phone}" th:if="${user}" type="hidden">
+                                        <div class="row">
+                                            <div class="col-md-6 col-md-6">
+                                                <div class="single-input">
+                                                    <input name="name" placeholder="Name"
+                                                           required th:autofocus="${user == null}"
+                                                           th:field="*{name}" th:unless="${user}"
+                                                           type="text">
+                                                    <input disabled th:if="${user}" th:value="${user.name}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-md-6">
+                                                <div class="single-input">
+                                                    <input name="email" placeholder="Email" required
+                                                           th:field="*{email}" th:unless="${user}"
+                                                           type="email">
+                                                    <input disabled th:if="${user}" th:value="${user.email}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-md-6">
+                                                <div class="single-input">
+                                                    <input id="subject" name="subject" placeholder="Subject"
+                                                           required th:autofocus="${user}" th:field="*{subject}"
+                                                           type="text">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-md-6">
+                                                <div class="single-input">
+                                                    <input name="phone" placeholder="Phone"
+                                                           required
+                                                           th:field="*{phone}" th:unless="${user}"
+                                                           type="text">
+                                                    <input class="phone-inputmask" disabled th:if="${user}"
+                                                           th:value="${user.phone}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="single-input">
+                                                    <textarea cols="15" id="message" name="message"
+                                                              placeholder="Message" required rows="2"
+                                                              th:field="*{message}"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="single-input button text-left">
+                                                    <button class="btn btn-success btn-contact" id="contactBtn"
+                                                            type="submit"><span>Submit</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <p class="form-message"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-12 d-none d-lg-block">
+                            <div class="pg-contact-img ml-xl-5 ml-0">
+                                <img alt="contact image"
+                                     th:src="@{/images/others/about-thumbnail.jpg}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!--// Contact Form -->
+
+        </div><!--// Pg Contact -->
+
+    </main><!-- //Page Conent -->
+
+    <!-- Common Footer Area -->
+    <footer th:replace="common/template :: common-footer"></footer>
+    <!-- //Footer Area -->
+
+</div><!-- //Main wrapper -->
+
+
+<!--Common Body Scripts-->
+<div th:replace="common/template :: common-scripts"></div>
+</body>
+
+
+</html>

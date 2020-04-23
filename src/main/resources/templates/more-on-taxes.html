@@ -1,0 +1,126 @@
+<!doctype html>
+<html class="no-js" lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Head -->
+<th:block th:replace="common/template :: common-head(title='..:: Tax Tracker | More on taxes ::..')"/>
+
+<body>
+
+<!--[if lte IE 9]>
+<th:block th:replace="common/template :: common-ie-check">
+<![endif]-->
+
+<div class="fakeloader"></div>
+
+<!-- Main wrapper -->
+<div class="wrapper" id="wrapper">
+
+    <!-- Start: Header Section -->
+    <header th:replace="common/template :: common-header"></header>
+    <!-- End: Header Section -->
+
+    <!-- Breadcrumb Area -->
+    <div th:replace="common/template :: common-breadcrumb('More on taxes', 'Get your facts right at all times...')"></div>
+    <!--// Breadcrumb Area -->
+
+    <!-- Page Conent -->
+    <main class="page-content">
+
+        <!-- Page Service Area -->
+        <section class="cr-section pg-services-area section-padding--xxs" id="pg-services-area">
+
+            <!-- Pg Service Area Top -->
+            <div class="pg-services-area__description">
+                <div class="container">
+                    <div class="row">
+                        <div class="pg-services__details">
+                            <h4>WANT TO FIND OUT MORE ABOUT TAXES?</h4>
+                            <h3>LET'S GUIDE YOU
+                                <span class="color--theme">ALL THE WAY</span>
+                            </h3>
+                            <p>Below are useful articles on taxes to answer most questions you may have. </p>
+                            <ol class="lead">
+
+                                <li><a target="_blank"
+                                       th:href="@{https://www.youtube.com/watch?v=5RbMK2QT75E&feature=youtu.be}">An
+                                    International Student's Guide to US Tax Returns</a></li>
+                                <li><a target="_blank"
+                                       th:href="@{https://www.irs.gov/individuals/international-taxpayers/determining-alien-tax-status}">Determining
+                                    Alien Tax Status</a></li>
+                                <li><a target="_blank"
+                                       th:href="@{https://www.irs.gov/individuals/international-taxpayers/exempt-individual-who-is-a-student}">Exempt
+                                    Individual (Exempt from Substantical Presence Test) - Student</a></li>
+                                <li><a target="_blank" th:href="@{https://www.irs.gov/pub/irs-pdf/p4011.pdf#page=3}">Are
+                                    you an exempt individual? – Decision Tree</a></li>
+                                <li><a target="_blank"
+                                       th:href="@{https://www.irs.gov/individuals/international-taxpayers/the-green-card-test-and-the-substantial-presence-test}">The
+                                    Green Card Test and the Substantial Presence Test</a></li>
+                                <li><a target="_blank"
+                                       th:href="@{https://www.irs.gov/individuals/international-taxpayers/taxation-of-nonresident-aliens}">Taxation
+                                    of Nonresident Aliens</a></li>
+                                <li><a target="_blank" th:href="@{https://www.irs.gov/taxtopics/tc421}">Are
+                                    Scholarships, Fellowship Grants, and Other Grants Taxable?</a></li>
+                                <li><a target="_blank"
+                                       th:href="@{https://www.irs.gov/individuals/international-taxpayers/tax-treaties}">Tax
+                                    Treaties</a></li>
+                                <li><a target="_blank" th:href="@{https://www.irs.gov/pub/irs-pdf/p4011.pdf#page=9}">Countries
+                                    With Treaty Benefits for Studying and Training (Income Code 20)</a></li>
+                                <li><a target="_blank" th:href="@{https://www.irs.gov/pub/irs-pdf/p4011.pdf#page=10}">Unique
+                                    Treaty Provisions (India, China, and Canada)</a></li>
+                                <li><a target="_blank" th:href="@{https://www.irs.gov/forms-pubs/about-form-w-2}">About
+                                    Form W-2, Wage and Tax Statement</a></li>
+                                <li><a target="_blank" th:href="@{https://www.irs.gov/pub/irs-pdf/fw2_19.pdf}">Form W-2,
+                                    2019</a></li>
+                                <li><a target="_blank" th:href="@{https://www.irs.gov/forms-pubs/about-form-1042-s}">About
+                                    Form 1042-S, Foreign Person's U.S. Source Income Subject to Withholding</a></li>
+                                <li><a target="_blank" th:href="@{https://www.irs.gov/pub/irs-pdf/f1042s_19.pdf}">Form
+                                    1042-S, 2019</a></li>
+                                <li><a target="_blank"
+                                       th:href="@{https://www.irs.gov/forms-pubs/about-form-1040-nr-ez}">About Form
+                                    1040-NR-EZ, U.S. Income Tax Return for Certain Nonresident Aliens With No
+                                    Dependents</a></li>
+                                <li><a target="_blank" th:href="@{https://www.irs.gov/pub/irs-dft/i1040nre--dft.pdf}">Instructions
+                                    for 1040-NR(EZ), 2019</a></li>
+                                <li><a target="_blank" th:href="@{https://www.irs.gov/forms-pubs/about-form-1040-nr}">About
+                                    Form 1040-NR, U.S. Nonresident Alien Income Tax Return</a></li>
+                                <li><a target="_blank" th:href="@{https://www.irs.gov/forms-pubs/about-form-8843}">About
+                                    Form 8843, Statement for Exempt Individuals and Individuals with a Medical
+                                    Condition</a></li>
+                                <li><a target="_blank"
+                                       th:href="@{https://www.irs.gov/individuals/international-taxpayers/foreign-student-liability-for-social-security-and-medicare-taxes}">Foreign
+                                    Student Liability for Social Security and Medicare Taxes</a></li>
+                                <li><a target="_blank"
+                                       th:href="@{https://www.irs.gov/individuals/international-taxpayers/foreign-students-and-scholars}">References
+                                    for Foreign Students and Scholars</a></li>
+                                <li><a target="_blank" th:href="@{https://www.irs.gov/help/ita}">Interactive Tax
+                                    Assistant For U.S. Citizens or Resident Aliens</a></li>
+                                <li><a target="_blank" th:href="@{https://www.marylandtaxes.gov/individual/index.php}">Maryland
+                                    State & Local Income Taxes Information</a></li>
+
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--// Pg Service Area Top -->
+
+        </section>
+        <!--// Page Service Area -->
+
+    </main>
+    <!-- //Page Conent -->
+
+    <!-- Common Footer Area -->
+    <footer th:replace="common/template :: common-footer"></footer>
+    <!-- //Footer Area -->
+
+</div>
+<!-- //Main wrapper -->
+
+<!--Common Body Scripts-->
+<div th:replace="common/template :: common-scripts"></div>
+
+</body>
+
+
+</html>
