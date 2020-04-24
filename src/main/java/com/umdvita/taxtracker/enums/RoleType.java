@@ -16,14 +16,14 @@ import lombok.ToString;
 @AllArgsConstructor
 public enum RoleType {
 
-  ADMIN(1, "ROLE_ADMIN", "ADMIN"),
-  LEADER(2, "ROLE_LEADER", "LEADER"),
-  VOLUNTEER(3, "ROLE_VOLUNTEER", "VOLUNTEER"),
-  USER(4, "ROLE_USER", "USER"),
-  CLIENT(5, "ROLE_CLIENT", "CLIENT"),
-  ENDPOINT_ADMIN(6, "ROLE_ENDPOINT_ADMIN", "ENDPOINT_ADMIN");
+  ADMIN((short) 1, "ROLE_ADMIN", "ADMIN"),
+  LEADER((short) 2, "ROLE_LEADER", "LEADER"),
+  VOLUNTEER((short) 3, "ROLE_VOLUNTEER", "VOLUNTEER"),
+  USER((short) 4, "ROLE_USER", "USER"),
+  CLIENT((short) 5, "ROLE_CLIENT", "CLIENT"),
+  ENDPOINT_ADMIN((short) 6, "ROLE_ENDPOINT_ADMIN", "ENDPOINT_ADMIN");
 
-  private final int id;
+  private final short id;
   private final String name;
   private final String role;
 }

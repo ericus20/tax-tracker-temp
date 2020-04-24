@@ -33,7 +33,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EqualsAndHashCode(of = {"version"})
 @EntityListeners(AuditingEntityListener.class)
-public class BaseEntity implements Serializable, Identifiable<Long> {
+public class BaseEntity<T extends Serializable> implements Serializable, Identifiable<T> {
   private static final long serialVersionUID = -1106817480796833080L;
 
   /**
@@ -52,7 +52,7 @@ public class BaseEntity implements Serializable, Identifiable<Long> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TaxTrackerSequenceGenerator")
-  private Long id;
+  private T id;
 
   /**
    * Manages the version of Entities to measure the amount of

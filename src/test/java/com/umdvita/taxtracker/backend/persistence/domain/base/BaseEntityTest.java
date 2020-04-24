@@ -17,14 +17,14 @@ import java.time.LocalDateTime;
  */
 class BaseEntityTest {
 
-  private BaseEntity baseEntity;
+  private BaseEntity<Long> baseEntity;
 
   /**
    * Initializes a base entity object to be used in the test.
    */
   @BeforeEach
   void setUp(TestInfo testInfo) {
-    baseEntity = new BaseEntity();
+    baseEntity = new BaseEntity<>();
     baseEntity.setId(1L);
     baseEntity.setVersion((short) 1);
     baseEntity.setCreatedAt(LocalDateTime.now(Clock.systemUTC()));
@@ -97,7 +97,7 @@ class BaseEntityTest {
 
   @Test
   void equalsNotSame() {
-    BaseEntity baseEntity2 = new BaseEntity();
+    BaseEntity<Long> baseEntity2 = new BaseEntity<>();
     baseEntity.setVersion((short) 1);
     baseEntity2.setVersion((short) 2);
     Assertions.assertNotEquals(baseEntity2, baseEntity);
@@ -120,7 +120,7 @@ class BaseEntityTest {
 
   @Test
   void canEqual() {
-    BaseEntity baseEntity2 = new BaseEntity();
+    BaseEntity<Long> baseEntity2 = new BaseEntity<>();
     baseEntity.setVersion((short) 2);
     baseEntity2.setVersion((short) 2);
     Assertions.assertTrue(baseEntity.canEqual(baseEntity2));
@@ -128,7 +128,7 @@ class BaseEntityTest {
 
   @Test
   void equalsSame() {
-    BaseEntity baseEntity2 = baseEntity;
+    BaseEntity<Long> baseEntity2 = baseEntity;
     baseEntity.setVersion((short) 1);
     baseEntity2.setVersion((short) 1);
     Assertions.assertEquals(baseEntity2, baseEntity);
