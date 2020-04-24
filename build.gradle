@@ -1,6 +1,7 @@
 plugins {
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'org.unbroken-dome.test-sets' version '3.0.1'
     id 'checkstyle'
     id 'eclipse'
     id 'java'
@@ -30,6 +31,12 @@ repositories {
 ext {
     mapstructVersion = "1.3.1.Final"
 }
+
+testSets {
+    integrationTest
+}
+
+bootJar.dependsOn integrationTest
 
 dependencies {
 
