@@ -8,6 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles(value = {ProfileType.PROD})
 public class TestUtility {
 
+  public static final String TEST_EMAIL = "test@email.com";
   public static final String[] ENTITY_GLOBAL_FIELDS_TO_IGNORE = {
           "id", "version", "createdAt", "createdBy", "updatedAt", "updatedBy"
   };
