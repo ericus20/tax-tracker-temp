@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.springframework.beans.BeanUtils;
 
 import java.security.SecureRandom;
 import java.time.LocalDate;
@@ -26,6 +25,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @Slf4j
 public abstract class UserUtility {
 
+  public static final String CHARACTER_SET = "0123456789abcdefghijklmnopqrstuvwszABCDEFGHIJKLMNOPQRSTUVWXYZ";
   public static final Random RANDOM = new SecureRandom();
   public static final String EMAIL = "@email.com";
   private static final int LENGTH = 30;
@@ -34,6 +34,27 @@ public abstract class UserUtility {
           + "is null or anonymous. Returning to login page.";
 
   private UserUtility() {
+  }
+
+  public static String generateRandomId() {
+    return generateRandomString(LENGTH);
+  }
+
+  public static String generateToken() {
+    return generateRandomString(LENGTH);
+  }
+
+  public static String generateUserId(int length) {
+    return generateRandomString(length);
+  }
+
+  public static String generateRandomString(int length) {
+    StringBuilder stringBuilder = new StringBuilder(length);
+    for (int i = 0; i < length; i++) {
+      String str = CHARACTER_SET;
+      stringBuilder.append(str.charAt(RANDOM.nextInt(str.length())));
+    }
+    return new String(stringBuilder);
   }
 
   public static String generateSsn() {
