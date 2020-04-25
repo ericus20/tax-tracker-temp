@@ -30,4 +30,9 @@ public class ApplicationProperties {
   private String awsAccessKeyId;
   private String awsSecretAccessKey;
   private String awsS3BucketName;
+
+  // Security props used in encryption and encoding
+  private String salt;
+  private String encryptionKey;
+  private String encryptionIntVec;
 }

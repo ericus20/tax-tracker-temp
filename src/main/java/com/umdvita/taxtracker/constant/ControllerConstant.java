@@ -7,7 +7,6 @@ package com.umdvita.taxtracker.constant;
  */
 public abstract class ControllerConstant {
 
-  public static final int STRENGTH = 12;
   public static final int MAXIMUM_SESSIONS = 200;
 
   /**
