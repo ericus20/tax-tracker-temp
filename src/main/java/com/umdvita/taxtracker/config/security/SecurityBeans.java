@@ -1,8 +1,7 @@
 package com.umdvita.taxtracker.config.security;
 
-import com.umdvita.taxtracker.constant.ControllerConstant;
+import com.umdvita.taxtracker.config.core.ApplicationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,12 +35,13 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class SecurityBeans {
 
   private final DataSource dataSource;
-  private final String salt;
+  private static final int STRENGTH = 12;
+  private final ApplicationProperties properties;
 
   @Autowired
-  public SecurityBeans(DataSource dataSource, @Value("${security.salt}") String salt) {
+  public SecurityBeans(DataSource dataSource, ApplicationProperties properties) {
     this.dataSource = dataSource;
-    this.salt = salt;
+    this.properties = properties;
   }
 
   @Bean
@@ -61,9 +61,7 @@ public class SecurityBeans {
             .passwordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder()::encode)
             .password("password").roles("USER").build();
 
-
     InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
-
     userDetailsManager.createUser(theUser);
     return userDetailsManager;
   }
@@ -75,7 +73,7 @@ public class SecurityBeans {
    */
   @Bean
   BCryptPasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder(ControllerConstant.STRENGTH, new SecureRandom(salt.getBytes(UTF_8)));
+    return new BCryptPasswordEncoder(STRENGTH, new SecureRandom(properties.getSalt().getBytes(UTF_8)));
   }
 
   /**
