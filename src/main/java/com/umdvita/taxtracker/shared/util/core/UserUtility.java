@@ -6,12 +6,15 @@ import com.umdvita.taxtracker.shared.dto.UserDto;
 import com.umdvita.taxtracker.shared.dto.mapper.UserDtoMapper;
 import com.umdvita.taxtracker.shared.util.validation.InputValidationUtility;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.security.SecureRandom;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -73,6 +76,29 @@ public abstract class UserUtility {
     DateTime dateTime = inFormat.parseDateTime(LocalDate.ofEpochDay(randomDay).toString());
     DateTimeFormatter outFormat = DateTimeFormat.forPattern("MM/dd/yyyy");
     return outFormat.print(dateTime);
+  }
+
+  public static boolean isValidSsn(String ssn) {
+    if (Objects.isNull(ssn)) {
+      return false;
+    }
+    // SSN could have the form xxx-xx-xxxx and may begin with "," due to input masking
+    ssn = ssn.strip().replaceAll("[-,]", "");
+    return StringUtils.isNotBlank(ssn) && ssn.length() == 9 && NumberUtils.isCreatable(ssn);
+  }
+
+  /**
+   * Retrieve the last 4 digits of a valid social number.
+   *
+   * @param ssn the ssn
+   * @return the last 4 digits
+   */
+  public static String getLast4Ssn(String ssn) {
+    InputValidationUtility.validateInputs(ssn);
+    if (!isValidSsn(ssn)) {
+      throw new IllegalArgumentException("The specified ssn " + ssn + " is not valid");
+    }
+    return ssn.substring(ssn.length() - LAST_4);
   }
 
   /**

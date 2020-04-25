@@ -58,7 +58,7 @@ class UserRepositoryTest extends RepositoryUtility {
   @DisplayName("findByToken")
   void findByToken(TestInfo testInfo) {
     User user = getUser(userRepository, testInfo.getDisplayName());
-    User storedUser = userRepository.findByToken(user.getEmail());
+    User storedUser = userRepository.findByToken(user.getToken());
     Assertions.assertNotNull(storedUser);
     Assertions.assertEquals(user, storedUser);
   }
@@ -67,7 +67,7 @@ class UserRepositoryTest extends RepositoryUtility {
   @DisplayName("getOneByToken")
   void getOneByToken(TestInfo testInfo) {
     User user = getUser(userRepository, testInfo.getDisplayName());
-    User storedUser = userRepository.getOneByToken(user.getEmail());
+    User storedUser = userRepository.getOneByToken(user.getToken());
     Assertions.assertNotNull(storedUser);
     Assertions.assertEquals(user, storedUser);
   }
