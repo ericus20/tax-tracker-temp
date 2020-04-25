@@ -20,8 +20,7 @@ public enum RoleType {
   LEADER((short) 2, "ROLE_LEADER", "LEADER"),
   VOLUNTEER((short) 3, "ROLE_VOLUNTEER", "VOLUNTEER"),
   USER((short) 4, "ROLE_USER", "USER"),
-  CLIENT((short) 5, "ROLE_CLIENT", "CLIENT"),
-  ENDPOINT_ADMIN((short) 6, "ROLE_ENDPOINT_ADMIN", "ENDPOINT_ADMIN");
+  ENDPOINT_ADMIN((short) 5, "ROLE_ENDPOINT_ADMIN", "ENDPOINT_ADMIN");
 
   private final short id;
   private final String name;

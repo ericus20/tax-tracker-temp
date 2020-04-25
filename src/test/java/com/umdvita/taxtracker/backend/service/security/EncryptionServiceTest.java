@@ -59,7 +59,7 @@ class EncryptionServiceTest {
     Assertions.assertNotEquals(encryptRequestUri, uri);
 
     Assertions.assertThrows(Exception.class,
-            () -> encryptionService.decodeText(testInfo.getDisplayName().concat(encryptRequestUri)));
+        () -> encryptionService.decodeText(testInfo.getDisplayName().concat(encryptRequestUri)));
   }
 
   @Test
@@ -110,7 +110,7 @@ class EncryptionServiceTest {
     Assertions.assertNotEquals(encodeUrl, uri);
 
     Assertions.assertThrows(TaxTrackerException.class,
-            () -> encryptionService.decryptRequestUri(testInfo.getDisplayName().concat(encodeUrl)));
+        () -> encryptionService.decryptRequestUri(testInfo.getDisplayName().concat(encodeUrl)));
   }
 
   @Test

@@ -14,6 +14,8 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.security.SecureRandom;
 import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -160,6 +162,31 @@ public abstract class UserUtility {
   public static void enableUser(UserDto userDto) {
     InputValidationUtility.validateInputs(userDto);
     userDto.setEnabled(true);
+  }
+
+  /**
+   * Transfers data from entity to returnable object.
+   *
+   * @param storedUserDetails stored user details
+   * @return user dto
+   */
+  public static UserDto getUserDto(User storedUserDetails) {
+    InputValidationUtility.validateInputs(storedUserDetails);
+    return UserDtoMapper.MAPPER.toUserDto(storedUserDetails);
+  }
+
+  /**
+   * Transfers data from list of entity to returnable list.
+   *
+   * @param storedUserDetails stored user details
+   * @return list of user dto
+   */
+  public static List<UserDto> getUserDto(List<User> storedUserDetails) {
+    InputValidationUtility.validateInputs(storedUserDetails);
+    List<UserDto> returnValue = UserDtoMapper.MAPPER.toUserDto(storedUserDetails);
+    returnValue.sort(Comparator.comparing(UserDto::getFirstName, Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(UserDto::getLastName, Comparator.nullsLast(Comparator.naturalOrder())));
+    return returnValue;
   }
 
   /**
