@@ -94,12 +94,12 @@ public class SignUpController {
     // Returns false if there was an error.
     UserDto storedUserDto = assignRolesAndCreateUser(userDto);
     if (Objects.isNull(storedUserDto)) {
-      LOG.error(SignUpControllerConstant.ERROR_CREATING_USER + " {}.", userDto);
-      model.addAttribute(ControllerConstant.ERROR, SignUpControllerConstant.ERROR_CREATING_USER);
+      LOG.error(UserConstant.ERROR_CREATING_USER + " {}.", userDto);
+      model.addAttribute(ControllerConstant.ERROR, UserConstant.ERROR_CREATING_USER);
       return SignUpControllerConstant.SIGN_UP_VIEW_NAME;
     }
     // send verification email to userDto
-//    sendAccountVerificationLink(storedUserDto, model, httpServletRequest);
+    // TODO: 4/26/2020 Send email confirmation link
     if (!model.containsAttribute(ControllerConstant.ERROR)) {
       LOG.debug(SignUpControllerConstant.USER_CREATED_SUCCESS_MESSAGE, storedUserDto);
       model.addAttribute(SignUpControllerConstant.SIGN_UP_PENDING_KEY, true);

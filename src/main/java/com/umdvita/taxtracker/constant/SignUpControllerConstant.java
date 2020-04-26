@@ -10,7 +10,6 @@ public abstract class SignUpControllerConstant {
   /**
    * Generic Constants.
    */
-  public static final String ERROR_CREATING_USER = "Error creating user";
   public static final String EMAIL_LINK = "link";
   public static final String IMAGE_URL = "imageUrl";
   public static final String IMAGE_URL_INLINE = "imageUrlInline";
