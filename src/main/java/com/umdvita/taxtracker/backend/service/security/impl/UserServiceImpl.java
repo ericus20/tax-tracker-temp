@@ -121,22 +121,6 @@ public class UserServiceImpl implements UserService {
   }
 
   /**
-   * Saves or updates the userDto with the userDto instance given.
-   *
-   * @param userDto the userDto with updated information
-   * @return the updated userDto.
-   * @throws IllegalArgumentException in case the given entity is
-   *                                  {@literal null}
-   */
-  @Override
-  @Transactional
-  public UserDto saveOrUpdate(UserDto userDto) {
-    InputValidationUtility.validateInputs(getClass(), userDto);
-    User user = UserUtility.getUserFromDto(userDto);
-    return UserUtility.getUserDto(userRepository.save(user));
-  }
-
-  /**
    * Returns a user for the given username or null if a user could not be found.
    *
    * @param username The username associated to the user to find
@@ -221,6 +205,7 @@ public class UserServiceImpl implements UserService {
       userDto.setLastName(StringUtils.capitalize(userDto.getLastName()));
       userDto.setName(String.join(" ", userDto.getFirstName(), userDto.getLastName()));
     }
+    executeThreadJoin();
   }
 
   /**
@@ -238,7 +223,6 @@ public class UserServiceImpl implements UserService {
       roles = Collections.singleton(new Role(RoleType.USER));
     }
     localUser.setRoles(roles);
-    executeThreadJoin();
     localUser = userRepository.save(localUser);
     LOG.debug("User successfully persisted as {}", localUser);
     return UserUtility.getUserDto(localUser);

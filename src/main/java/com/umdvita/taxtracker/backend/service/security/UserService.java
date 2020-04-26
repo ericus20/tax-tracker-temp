@@ -44,16 +44,6 @@ public interface UserService extends UserDetailsService {
   List<UserDto> createUsers(List<UserDto> userDtos);
 
   /**
-   * Saves or updates the userDto with the userDto instance given.
-   *
-   * @param userDto the userDto with updated information
-   * @return the updated userDto.
-   * @throws IllegalArgumentException in case the given entity is
-   *                                  {@literal null}
-   */
-  UserDto saveOrUpdate(UserDto userDto);
-
-  /**
    * Returns a user for the given username or null if a user could not be found.
    *
    * @param username The username associated to the user to find

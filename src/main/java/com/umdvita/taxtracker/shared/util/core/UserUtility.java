@@ -63,7 +63,7 @@ public abstract class UserUtility {
   }
 
   public static String generateSsn() {
-    return String.format("%09d", RANDOM.nextInt(1000000000));
+    return String.format("%09d", RANDOM.nextInt(1_000_000_000) + 1_000_000_00);
   }
 
   public static String generatePhone() {

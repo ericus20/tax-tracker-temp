@@ -7,12 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.firewall.HttpFirewall;
@@ -47,23 +42,6 @@ public class SecurityBeans {
   @Bean
   public static ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
     return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
-  }
-
-  /**
-   * Returns the userDetailsService instance.
-   *
-   * @return the userDetailsService
-   */
-  @Bean
-  public UserDetailsService userDetailsService() {
-    //User Role
-    UserDetails theUser = User.withUsername("user")
-            .passwordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder()::encode)
-            .password("password").roles("USER").build();
-
-    InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
-    userDetailsManager.createUser(theUser);
-    return userDetailsManager;
   }
 
   /**
