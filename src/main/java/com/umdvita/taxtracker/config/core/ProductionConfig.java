@@ -1,6 +1,9 @@
 package com.umdvita.taxtracker.config.core;
 
+import com.umdvita.taxtracker.backend.service.mail.EmailService;
+import com.umdvita.taxtracker.backend.service.mail.impl.SmtpEmailServiceImpl;
 import com.umdvita.taxtracker.constant.ProfileType;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
@@ -14,4 +17,14 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @Profile(value = {ProfileType.PROD, ProfileType.PROD_AWS, ProfileType.DOCKER})
 public class ProductionConfig {
+
+  /**
+   * A bean for Email Service in development environment.
+   *
+   * @return a mocked email service implementation.
+   */
+  @Bean
+  public EmailService emailService() {
+    return new SmtpEmailServiceImpl();
+  }
 }

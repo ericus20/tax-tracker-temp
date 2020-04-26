@@ -17,11 +17,11 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @ToString(exclude = {"password", "ssn"})
-@EqualsAndHashCode(of = {"username", "email", "userId"}, callSuper = false)
+@EqualsAndHashCode(of = {"username", "email", "token"}, callSuper = false)
 public class UserDto extends BaseDto implements Serializable {
   private static final long serialVersionUID = -2423636754258148802L;
 
-  private String userId;
+  private String token;
   private String username;
   private String password;
   private String firstName;
@@ -32,6 +32,7 @@ public class UserDto extends BaseDto implements Serializable {
   private String ssn;
   private String last4Ssn;
   private String phone;
+  private String role;
   private String profileImageUrl;
   private String preSignedProfileImageUrl;
   private boolean enabled;

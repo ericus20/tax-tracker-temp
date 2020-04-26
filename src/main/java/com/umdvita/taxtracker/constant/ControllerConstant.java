@@ -27,6 +27,9 @@ public abstract class ControllerConstant {
   public static final String PRIVACY_POLICY_URL = "/privacy-policy";
   public static final String TERMS_AND_CONDITIONS_URL = "/terms-and-conditions";
 
+  public static final String URLS = "urls";
+  public static final String ERROR = "error";
+
   /**
    * View Name Constants.
    */
@@ -40,6 +43,8 @@ public abstract class ControllerConstant {
   public static final String ABOUT_US_VIEW_NAME = "copy/about-us";
   public static final String PRIVACY_VIEW_NAME = "copy/privacy-policy";
   public static final String TERMS_AND_CONDITION_VIEW_NAME = "copy/terms-and-conditions";
+
+  public static final String SIGN_UP_VIEW_NAME = "user/sign-up";
 
   /**
    * URL Redirection Constants.

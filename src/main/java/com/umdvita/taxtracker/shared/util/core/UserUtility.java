@@ -5,15 +5,19 @@ import com.umdvita.taxtracker.backend.persistence.domain.security.user.User;
 import com.umdvita.taxtracker.shared.dto.UserDto;
 import com.umdvita.taxtracker.shared.dto.mapper.UserDtoMapper;
 import com.umdvita.taxtracker.shared.util.validation.InputValidationUtility;
+import com.umdvita.taxtracker.web.model.request.UserRequestModel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.beans.BeanUtils;
 
 import java.security.SecureRandom;
 import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -61,7 +65,7 @@ public abstract class UserUtility {
   }
 
   public static String generateSsn() {
-    return String.format("%09d", RANDOM.nextInt(1000000000));
+    return String.format("%09d", RANDOM.nextInt(1_000_000_000) + 1_000_000_00);
   }
 
   public static String generatePhone() {
@@ -160,6 +164,42 @@ public abstract class UserUtility {
   public static void enableUser(UserDto userDto) {
     InputValidationUtility.validateInputs(userDto);
     userDto.setEnabled(true);
+  }
+
+  /**
+   * Transfers data from entity to returnable object.
+   *
+   * @param storedUserDetails stored user details
+   * @return user dto
+   */
+  public static UserDto getUserDto(User storedUserDetails) {
+    InputValidationUtility.validateInputs(storedUserDetails);
+    return UserDtoMapper.MAPPER.toUserDto(storedUserDetails);
+  }
+
+  /**
+   * Transfers data from list of entity to returnable list.
+   *
+   * @param storedUserDetails stored user details
+   * @return list of user dto
+   */
+  public static List<UserDto> getUserDto(List<User> storedUserDetails) {
+    InputValidationUtility.validateInputs(storedUserDetails);
+    List<UserDto> returnValue = UserDtoMapper.MAPPER.toUserDto(storedUserDetails);
+    returnValue.sort(Comparator.comparing(UserDto::getFirstName, Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(UserDto::getLastName, Comparator.nullsLast(Comparator.naturalOrder())));
+    return returnValue;
+  }
+
+  /**
+   * Transfers data from request model to dto.
+   *
+   * @param storedUserDetails stored user details
+   * @return user dto
+   */
+  public static UserDto getUserDto(UserRequestModel storedUserDetails) {
+    InputValidationUtility.validateInputs(storedUserDetails);
+    return UserDtoMapper.MAPPER.toUserDto(storedUserDetails);
   }
 
   /**

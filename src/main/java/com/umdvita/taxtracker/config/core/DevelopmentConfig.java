@@ -1,5 +1,7 @@
 package com.umdvita.taxtracker.config.core;
 
+import com.umdvita.taxtracker.backend.service.mail.EmailService;
+import com.umdvita.taxtracker.backend.service.mail.impl.MockEmailServiceImpl;
 import com.umdvita.taxtracker.constant.ProfileType;
 import org.h2.server.web.WebServlet;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -28,5 +30,15 @@ public class DevelopmentConfig {
   @Bean
   public ServletRegistrationBean<WebServlet> h2ConsoleServletRegistration() {
     return new ServletRegistrationBean<>(new WebServlet(), H2_CONSOLE_URL_MAPPING);
+  }
+
+  /**
+   * A bean for Email Service in development environment.
+   *
+   * @return a mocked email service implementation.
+   */
+  @Bean
+  public EmailService emailService() {
+    return new MockEmailServiceImpl();
   }
 }

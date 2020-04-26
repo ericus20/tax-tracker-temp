@@ -1,5 +1,6 @@
 package com.umdvita.taxtracker.config.security;
 
+import com.umdvita.taxtracker.backend.service.security.UserService;
 import com.umdvita.taxtracker.constant.ControllerConstant;
 import com.umdvita.taxtracker.constant.ProfileType;
 import com.umdvita.taxtracker.enums.RoleType;
@@ -53,17 +54,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   };
 
   private final Environment environment;
+  private final UserService userService;
   private final SecurityBeans securityBeans;
 
   /**
    * Constructor for SecurityConfig class.
-   *
-   * @param environment        Environment
+   *  @param environment       the environment
+   * @param userService        the user service
    * @param securityBeans      the security beans
    */
   @Autowired
-  public SecurityConfig(Environment environment, SecurityBeans securityBeans) {
+  public SecurityConfig(Environment environment, UserService userService, SecurityBeans securityBeans) {
     this.environment = environment;
+    this.userService = userService;
     this.securityBeans = securityBeans;
   }
 
@@ -139,7 +142,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   void configureGlobal(final AuthenticationManagerBuilder auth) {
     try {
       auth
-              .userDetailsService(securityBeans.userDetailsService())
+              .userDetailsService(userService)
               .passwordEncoder(securityBeans.passwordEncoder());
 
     } catch (Exception e) {
