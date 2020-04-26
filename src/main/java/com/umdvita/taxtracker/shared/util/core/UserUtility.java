@@ -5,12 +5,14 @@ import com.umdvita.taxtracker.backend.persistence.domain.security.user.User;
 import com.umdvita.taxtracker.shared.dto.UserDto;
 import com.umdvita.taxtracker.shared.dto.mapper.UserDtoMapper;
 import com.umdvita.taxtracker.shared.util.validation.InputValidationUtility;
+import com.umdvita.taxtracker.web.model.request.UserRequestModel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.beans.BeanUtils;
 
 import java.security.SecureRandom;
 import java.time.LocalDate;
@@ -187,6 +189,17 @@ public abstract class UserUtility {
     returnValue.sort(Comparator.comparing(UserDto::getFirstName, Comparator.nullsLast(Comparator.naturalOrder()))
             .thenComparing(UserDto::getLastName, Comparator.nullsLast(Comparator.naturalOrder())));
     return returnValue;
+  }
+
+  /**
+   * Transfers data from request model to dto.
+   *
+   * @param storedUserDetails stored user details
+   * @return user dto
+   */
+  public static UserDto getUserDto(UserRequestModel storedUserDetails) {
+    InputValidationUtility.validateInputs(storedUserDetails);
+    return UserDtoMapper.MAPPER.toUserDto(storedUserDetails);
   }
 
   /**

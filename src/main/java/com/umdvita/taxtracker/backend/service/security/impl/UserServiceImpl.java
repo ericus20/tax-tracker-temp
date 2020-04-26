@@ -157,6 +157,30 @@ public class UserServiceImpl implements UserService {
   }
 
   /**
+   * Checks if the username already exists.
+   *
+   * @param username the username
+   * @return <code>true</code> if username exists
+   */
+  @Override
+  public boolean existsByUsername(String username) {
+    InputValidationUtility.validateInputs(getClass(), username);
+    return userRepository.existsByUsernameOrderById(username);
+  }
+
+  /**
+   * Checks if the email already exists and the user is enabled.
+   *
+   * @param email the email
+   * @return <code>true</code> if email exists and enabled
+   */
+  @Override
+  public boolean existsByEmailAndEnabled(String email) {
+    InputValidationUtility.validateInputs(getClass(), email);
+    return userRepository.existsByEmailAndEnabledTrueOrderById(email);
+  }
+
+  /**
    * Locates the user based on the username. In the actual implementation, the search
    * may possibly be case sensitive, or case insensitive depending on how the
    * implementation instance is configured. In this case, the <code>UserDetails</code>

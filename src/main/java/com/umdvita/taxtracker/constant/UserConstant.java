@@ -9,6 +9,11 @@ package com.umdvita.taxtracker.constant;
  */
 public abstract class UserConstant {
 
+  /**
+   * URL Mapping Constants.
+   */
+  public static final String ERROR_CREATING_USER = "Error creating user";
+
 
   /**
    * Model Keys.

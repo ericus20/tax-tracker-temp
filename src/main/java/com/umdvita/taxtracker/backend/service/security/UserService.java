@@ -62,4 +62,20 @@ public interface UserService extends UserDetailsService {
    *                                  {@literal null}
    */
   UserDto getUserReferenceByUsername(String username);
+
+  /**
+   * Checks if the username already exists.
+   *
+   * @param username the username
+   * @return <code>true</code> if username exists
+   */
+  boolean existsByUsername(String username);
+
+  /**
+   * Checks if the email already exists and the user is enabled.
+   *
+   * @param email the email
+   * @return <code>true</code> if email exists and enabled
+   */
+  boolean existsByEmailAndEnabled(String email);
 }

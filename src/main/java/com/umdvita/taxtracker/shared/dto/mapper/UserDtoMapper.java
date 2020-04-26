@@ -4,6 +4,7 @@ import com.umdvita.taxtracker.backend.persistence.domain.security.Role;
 import com.umdvita.taxtracker.backend.persistence.domain.security.user.User;
 import com.umdvita.taxtracker.enums.RoleType;
 import com.umdvita.taxtracker.shared.dto.UserDto;
+import com.umdvita.taxtracker.web.model.request.UserRequestModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -26,6 +27,8 @@ public interface UserDtoMapper {
 
   @Mapping(target = "role", qualifiedByName = "setRole")
   UserDto toUserDto(User user);
+
+  UserDto toUserDto(UserRequestModel userRequestModel);
 
   List<UserDto> toUserDto(List<User> users);
 
