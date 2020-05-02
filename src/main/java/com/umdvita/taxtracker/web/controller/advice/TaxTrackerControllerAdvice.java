@@ -11,7 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
- * The controller advice for handling all web mvc exceptions.
+ * The controller advice for handling generic web exceptions.
  *
  * @author Eric Opoku
  * @version 1.0
@@ -22,13 +22,11 @@ public class TaxTrackerControllerAdvice extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(value = {TaxGroupNotEmptyException.class})
   protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
-    String bodyOfResponse = ex.getMessage();
-    return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
+    return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
   }
 
   @ExceptionHandler(value = {TaxTrackerException.class})
   protected ResponseEntity<Object> handleGlobal(RuntimeException ex, WebRequest request) {
-    String bodyOfResponse = ex.getMessage();
-    return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+    return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
   }
 }

@@ -25,7 +25,7 @@ class RoleRepositoryTest {
     Assertions.assertNotNull(savedUserRole);
     Assertions.assertEquals(userRole, savedUserRole);
 
-    Role roleFromDatabase = roleRepository.findByName(savedUserRole.getName());
+    Role roleFromDatabase = roleRepository.findByName(RoleType.USER.getName());
     Assertions.assertNotNull(roleFromDatabase);
     Assertions.assertEquals(userRole, roleFromDatabase);
   }

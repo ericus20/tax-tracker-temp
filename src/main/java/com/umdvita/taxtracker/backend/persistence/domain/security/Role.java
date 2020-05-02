@@ -1,6 +1,5 @@
 package com.umdvita.taxtracker.backend.persistence.domain.security;
 
-import com.umdvita.taxtracker.backend.persistence.domain.base.BaseEntity;
 import com.umdvita.taxtracker.enums.RoleType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
@@ -22,14 +22,17 @@ import java.io.Serializable;
 @Entity
 @Cacheable
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"name"}, callSuper = false)
-public class Role extends BaseEntity<Short> implements Serializable {
+@EqualsAndHashCode(of = {"name"})
+public class Role implements Serializable {
 
   /**
    * Since the object will be travelling across several JVM this UID will
    * be to serialize and deserialize.
    */
   private static final long serialVersionUID = -4726597492234568939L;
+
+  @Id
+  private Short id;
 
   /**
    * The name for this role.

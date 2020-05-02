@@ -1,6 +1,8 @@
 package com.umdvita.taxtracker;
 
+import com.umdvita.taxtracker.backend.persistence.domain.security.PasswordToken;
 import com.umdvita.taxtracker.backend.persistence.domain.security.Role;
+import com.umdvita.taxtracker.backend.service.security.PasswordTokenService;
 import com.umdvita.taxtracker.backend.service.security.UserService;
 import com.umdvita.taxtracker.constant.ProfileType;
 import com.umdvita.taxtracker.enums.RoleType;
@@ -12,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Component
 @ActiveProfiles(value = {ProfileType.PROD})
@@ -63,5 +66,46 @@ public class TestUtility {
       UserUtility.enableUser(userDto);
     }
     return userService.createUser(userDto, roles);
+  }
+
+  /**
+   * Creates and persists password reset token.
+   *
+   * @param username             username
+   * @param userService          userService
+   * @param passwordTokenService the password token service
+   * @return the persisted password rest token.
+   */
+  protected PasswordToken createPasswordToken(String username, UserService userService,
+                                              PasswordTokenService passwordTokenService) {
+    return createPasswordToken(username, userService, passwordTokenService, -1);
+  }
+
+  /**
+   * Creates and persists password reset token.
+   *
+   * @param username             username
+   * @param userService          userService
+   * @param passwordTokenService the password token service
+   * @param period               the expiry duration
+   * @return the persisted password rest token.
+   */
+  protected PasswordToken createPasswordToken(String username, UserService userService,
+                                              PasswordTokenService passwordTokenService, int period) {
+    UserDto userDto = createTestUser(userService, username, false);
+    String token = UUID.randomUUID().toString();
+    return passwordTokenService.savePasswordTokenWithUser(token, userDto.getEmail(), period).orElse(null);
+  }
+
+  /**
+   * Creates and persists password reset token.
+   *
+   * @param passwordTokenService password token service
+   * @param userDto              userDto
+   * @return the persisted password rest token.
+   */
+  protected PasswordToken createPasswordToken(PasswordTokenService passwordTokenService, UserDto userDto) {
+    String token = UUID.randomUUID().toString();
+    return passwordTokenService.savePasswordTokenWithUser(token, userDto.getEmail()).orElse(null);
   }
 }

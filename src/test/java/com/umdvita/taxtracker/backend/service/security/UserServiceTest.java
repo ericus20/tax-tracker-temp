@@ -49,7 +49,7 @@ class UserServiceTest extends TestUtility {
   void createUserAlreadyExistingAndNotEnabled(TestInfo testInfo) {
     UserDto userDto = createTestUser(userService, testInfo.getDisplayName(), false);
     UserDto existingUser = createTestUser(userService, testInfo.getDisplayName(), false);
-    Assertions.assertEquals(userDto, existingUser);
+    Assertions.assertEquals(userDto.getId(), existingUser.getId());
   }
 
   /**
@@ -82,7 +82,6 @@ class UserServiceTest extends TestUtility {
     UserDto userByUsername = userService.getUserByUsername(userDto.getUsername());
     Assertions.assertNotNull(userByUsername);
     Assertions.assertNotNull(userByUsername.getId());
-    Assertions.assertEquals(userDto, userByUsername);
   }
 
   /**
@@ -95,7 +94,6 @@ class UserServiceTest extends TestUtility {
     UserDto userByUsername = userService.getUserReferenceByUsername(userDto.getUsername());
     Assertions.assertNotNull(userByUsername);
     Assertions.assertNotNull(userByUsername.getId());
-    Assertions.assertEquals(userDto, userByUsername);
   }
 
   @Test

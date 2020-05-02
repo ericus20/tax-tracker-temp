@@ -1,11 +1,17 @@
 package com.umdvita.taxtracker.shared.util.core;
 
+import com.umdvita.taxtracker.constant.ApplicationConstant;
+import com.umdvita.taxtracker.constant.ControllerConstant;
 import com.umdvita.taxtracker.shared.util.validation.InputValidationUtility;
+import com.umdvita.taxtracker.web.model.feedback.EmailFormat;
 import org.apache.commons.lang3.StringUtils;
+import org.thymeleaf.context.Context;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This utility class holds all common methods used in the web layer.
@@ -23,7 +29,7 @@ public abstract class WebUtility {
   private static final String COPY_ABOUT_US = "/copy/about-us";
 
   private WebUtility() {
-    throw new AssertionError("Non instantiable");
+    throw new AssertionError(ApplicationConstant.ASSERTION_ERROR_MESSAGE);
   }
 
   /**
@@ -83,4 +89,58 @@ public abstract class WebUtility {
   public static Map<String, String> getDefaultUrls(final String baseUrl, HttpServletRequest httpServletRequest) {
     return new HashMap<>();
   }
+
+  /**
+   * Prepares a context with current content.
+   *
+   * @param emailFormat the emailFormat
+   * @return emailFormat with context
+   */
+  public static EmailFormat prepareEmailFormat(final EmailFormat emailFormat) {
+    return prepareEmailFormat(emailFormat, Collections.emptyMap());
+  }
+
+  public static EmailFormat prepareEmailFormat(final EmailFormat emailFormat, Map<String, String> contextVariables) {
+    Context context = new Context();
+    for (Map.Entry<String, String> entry : contextVariables.entrySet()) {
+      context.setVariable(entry.getKey(), entry.getValue());
+    }
+    context.setVariable(ControllerConstant.URLS, emailFormat.getUrls());
+    // set the appropriate to and from based on the details available
+    configureSenderAndReceiverDetails(emailFormat, context);
+
+    emailFormat.setSubject(emailFormat.getSubject());
+    if (Objects.nonNull(emailFormat.getLink())) {
+      context.setVariable(ControllerConstant.EMAIL_LINK, emailFormat.getLink());
+    }
+    if (Objects.nonNull(emailFormat.getMessage())) {
+      context.setVariable(ControllerConstant.MESSAGE, emailFormat.getMessage());
+    }
+    // TODO: 4/26/2020 Setup document details
+    // setup the needed details from the tax return object if present
+    configureTaxReturnDetails(emailFormat, context);
+    emailFormat.setContext(context);
+    return emailFormat;
+  }
+
+  /**
+   * set the appropriate to and from based on the details available.
+   *
+   * @param emailFormat the emailFormat
+   * @param context     the context
+   */
+  private static void configureSenderAndReceiverDetails(EmailFormat emailFormat, Context context) {
+
+  }
+
+  /**
+   * Setup the needed details from the tax return object if present.
+   *
+   * @param emailFormat the email format
+   * @param context     the thyemeleaf context
+   */
+  public static void configureTaxReturnDetails(EmailFormat emailFormat, Context context) {
+
+  }
+
 }

@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           ControllerConstant.CONSOLE,
           ControllerConstant.LOGIN_URL,
           ControllerConstant.SIGN_UP,
+          ControllerConstant.COMPLETE_SIGN_UP,
           ControllerConstant.EXPIRED_URL,
           ControllerConstant.ROOT,
   };

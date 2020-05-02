@@ -3,11 +3,11 @@ package com.umdvita.taxtracker.backend.service.security.impl;
 import com.umdvita.taxtracker.backend.persistence.domain.security.Role;
 import com.umdvita.taxtracker.backend.persistence.repository.security.RoleRepository;
 import com.umdvita.taxtracker.backend.service.security.RoleService;
+import com.umdvita.taxtracker.shared.util.validation.InputValidationUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -45,10 +45,6 @@ public class RoleServiceImpl implements RoleService {
   @Override
   @Transactional
   public Optional<Role> saveRole(final Role role) {
-    Role storedRole = roleRepository.findByName(role.getName());
-    if (Objects.nonNull(storedRole)) {
-      return Optional.of(storedRole);
-    }
     return Optional.of(roleRepository.save(role));
   }
 
@@ -71,6 +67,7 @@ public class RoleServiceImpl implements RoleService {
    */
   @Override
   public Optional<Role> getRoleByName(final String name) {
+    InputValidationUtility.validateInputs(getClass(), name);
     return Optional.of(roleRepository.findByName(name));
   }
 }

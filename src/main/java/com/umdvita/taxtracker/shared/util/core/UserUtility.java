@@ -2,7 +2,10 @@ package com.umdvita.taxtracker.shared.util.core;
 
 import com.github.javafaker.Faker;
 import com.umdvita.taxtracker.backend.persistence.domain.security.user.User;
+import com.umdvita.taxtracker.backend.service.security.UserService;
+import com.umdvita.taxtracker.constant.ApplicationConstant;
 import com.umdvita.taxtracker.shared.dto.UserDto;
+import com.umdvita.taxtracker.shared.dto.UserUpdateDto;
 import com.umdvita.taxtracker.shared.dto.mapper.UserDtoMapper;
 import com.umdvita.taxtracker.shared.util.validation.InputValidationUtility;
 import com.umdvita.taxtracker.web.model.request.UserRequestModel;
@@ -12,7 +15,10 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.springframework.beans.BeanUtils;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.SecureRandom;
 import java.time.LocalDate;
@@ -23,7 +29,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * This utility class holds all security methods used in the application.
+ * This utility class holds all user shared methods used in the application.
  *
  * @author Eric Opoku
  * @version 1.0
@@ -34,17 +40,24 @@ public abstract class UserUtility {
 
   public static final String CHARACTER_SET = "0123456789abcdefghijklmnopqrstuvwszABCDEFGHIJKLMNOPQRSTUVWXYZ";
   public static final Random RANDOM = new SecureRandom();
+  static Faker faker = new Faker();
   public static final String EMAIL = "@email.com";
   private static final int LENGTH = 30;
   private static final int LAST_4 = 4;
+  public static final String AUTHENTICATION_ERROR_MESSAGE = "Error authenticating user";
   private static final String UNAUTHORIZED_ACCESS_MESSAGE = "Unauthorized Access detected... User authentication "
           + "is null or anonymous. Returning to login page.";
 
   private UserUtility() {
+    throw new AssertionError(ApplicationConstant.ASSERTION_ERROR_MESSAGE);
   }
 
   public static String generateRandomId() {
     return generateRandomString(LENGTH);
+  }
+
+  public static String generateToken(String email) {
+    return generateRandomString(email.length());
   }
 
   public static String generateToken() {
@@ -65,11 +78,11 @@ public abstract class UserUtility {
   }
 
   public static String generateSsn() {
-    return String.format("%09d", RANDOM.nextInt(1_000_000_000) + 1_000_000_00);
+    return faker.idNumber().ssnValid();
   }
 
   public static String generatePhone() {
-    return String.valueOf((long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L);
+    return faker.phoneNumber().phoneNumber();
   }
 
   public static String generateDob() {
@@ -88,7 +101,7 @@ public abstract class UserUtility {
     }
     // SSN could have the form xxx-xx-xxxx and may begin with "," due to input masking
     ssn = ssn.strip().replaceAll("[-,]", "");
-    return StringUtils.isNotBlank(ssn) && ssn.length() == 9 && NumberUtils.isCreatable(ssn);
+    return StringUtils.isNotBlank(ssn) && ssn.length() == 9 && NumberUtils.isParsable(ssn);
   }
 
   /**
@@ -115,7 +128,6 @@ public abstract class UserUtility {
    * @return the user dto
    */
   public static UserDto createTestUser(String username, String password, boolean requiredFields, boolean enable) {
-    Faker faker = new Faker();
     UserDto userDto = new UserDto();
     userDto.setUsername(username);
     userDto.setPassword(password);
@@ -167,6 +179,16 @@ public abstract class UserUtility {
   }
 
   /**
+   * Enables and unlocks a user.
+   *
+   * @param user the user
+   */
+  public static void enableUser(User user) {
+    InputValidationUtility.validateInputs(user);
+    user.setEnabled(true);
+  }
+
+  /**
    * Transfers data from entity to returnable object.
    *
    * @param storedUserDetails stored user details
@@ -203,6 +225,28 @@ public abstract class UserUtility {
   }
 
   /**
+   * Transfers data from request model to dto.
+   *
+   * @param storedUserDetails stored user details
+   * @return user dto
+   */
+  public static UserUpdateDto getUserUpdateDto(User storedUserDetails) {
+    InputValidationUtility.validateInputs(storedUserDetails);
+    return UserDtoMapper.MAPPER.toUserUpdateDto(storedUserDetails);
+  }
+
+  /**
+   * Transfers data from request model to dto.
+   *
+   * @param userDto stored user details
+   * @return user dto
+   */
+  public static UserUpdateDto getUserUpdateDto(UserDto userDto) {
+    InputValidationUtility.validateInputs(userDto);
+    return UserDtoMapper.MAPPER.toUserUpdateDto(userDto);
+  }
+
+  /**
    * Transfers data from entity to returnable object.
    *
    * @param userDto the userDto
@@ -211,5 +255,26 @@ public abstract class UserUtility {
   public static User getUserFromDto(UserDto userDto) {
     InputValidationUtility.validateInputs(userDto);
     return UserDtoMapper.MAPPER.toUser(userDto);
+  }
+
+  /**
+   * Transfers data from entity to returnable object.
+   *
+   * @param userUpdateDto the userUpdateDto
+   * @return user
+   */
+  public static User getUserFromUpdatedDto(UserUpdateDto userUpdateDto) {
+    InputValidationUtility.validateInputs(userUpdateDto);
+    return UserDtoMapper.MAPPER.toUser(userUpdateDto);
+  }
+
+  public static void authenticateUser(UserService userService, String email) {
+    UserDetails userDetails = userService.loadUserByUsername(email);
+    if (Objects.nonNull(userDetails)) {
+      Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails,
+              userDetails.getPassword(), userDetails.getAuthorities());
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+      LOG.debug("Authentication instantiated as {}", authentication);
+    }
   }
 }

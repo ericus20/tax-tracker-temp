@@ -27,8 +27,18 @@ public abstract class ControllerConstant {
   public static final String PRIVACY_POLICY_URL = "/privacy-policy";
   public static final String TERMS_AND_CONDITIONS_URL = "/terms-and-conditions";
 
-  public static final String URLS = "urls";
   public static final String ERROR = "error";
+  public static final String EMAIL_LINK = "link";
+  public static final String URLS = "urls";
+  public static final String IMAGE_URL = "imageUrl";
+  public static final String IMAGE_URL_INLINE = "imageUrlInline";
+  public static final String EMAIL_VERIFY_TEMPLATE = "email/verify-email";
+  public static final String MAIL_SUCCESS_MESSAGE = "Mail successfully sent!";
+  public static final String MAIL_ERROR_MESSAGE = "There was an error sending mail!";
+  public static final String INVALID_TOKEN = "Invalid Token";
+  public static final String MESSAGE = "message";
+  public static final String DOCUMENT = "document";
+  public static final String EMAIL_WELCOME_TEMPLATE = "email/welcome";
 
   /**
    * View Name Constants.
@@ -52,10 +62,12 @@ public abstract class ControllerConstant {
   public static final String REDIRECT_TO_TAX_DASHBOARD = "redirect:/tax/dashboard";
   public static final String REDIRECT_HOME = "redirect:/";
   public static final String REDIRECT_TO_LOGIN = "redirect:/login";
+  public static final String REDIRECT_TO_PROFILE = "redirect:/profile";
 
   /**
    * Model Key Constant for email success.
    */
+  public static final String NEW_PROFILE = "newProfile";
   public static final String USER_REQUEST_MODEL_KEY_NAME = "userRequestModel";
 
   /**
@@ -88,6 +100,7 @@ public abstract class ControllerConstant {
   public static final String MORE_ON_TAXES = "/more-on-taxes/**";
   public static final String CONSOLE = "/console/**";
   public static final String SIGN_UP = "/sign-up/**";
+  public static final String COMPLETE_SIGN_UP = "/complete-sign-up/**";
   public static final String EXPIRED_URL = "/expired-url";
   public static final String ROOT = "/";
   public static final String X_FORWARDED_PROTO = "X-Forwarded-Proto";

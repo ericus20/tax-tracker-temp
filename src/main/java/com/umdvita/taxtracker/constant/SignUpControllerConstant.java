@@ -32,6 +32,7 @@ public abstract class SignUpControllerConstant {
   public static final String USER_TOKEN_CREATED_SUCCESSFULLY
           = "User password token created Successfully as {}";
   public static final String USER_CREATED_SUCCESS_MESSAGE = "User created Successfully {}";
+  public static final String USER_EXISTS_MESSAGE = "Account already exist!";
   /**
    * URL Mapping Constants.
    */
@@ -49,15 +50,14 @@ public abstract class SignUpControllerConstant {
   public static final String SIGN_UP_SUCCESS_KEY = "signedUp";
   public static final String SIGN_UP_PENDING_KEY = "verify";
   public static final String SIGN_UP_ERROR = "signUpError";
+
   /**
    * Message Key Constants.
    */
-  public static final String CONFIRMATION_PENDING_EMAIL_SUBJECT
-          = "signup.confirmation.pending.email.subject";
-  public static final String CONFIRMATION_SUCCESS_EMAIL_SUBJECT
-          = "signup.confirmation.success.email.subject";
-  public static final String CONFIRMATION_SUCCESS_EMAIL_TEXT
-          = "signup.confirmation.success.email.text";
+  public static final String CONFIRMATION_PENDING_EMAIL_SUBJECT = "[UMD VITA] You are almost there...";
+  public static final String CONFIRMATION_SUCCESS_EMAIL_SUBJECT = "[UMD VITA] Thank you for choosing MSLC - Terptax";
+  public static final String CONFIRMATION_SUCCESS_EMAIL_TEXT = "Thank you for choosing MSLC - Terptax. "
+          + "Your profile has been created. Please visit your profile and update your information.";
 
   private SignUpControllerConstant() {
     throw new AssertionError("Non Instantiable");
