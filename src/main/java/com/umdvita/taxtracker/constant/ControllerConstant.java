@@ -27,8 +27,18 @@ public abstract class ControllerConstant {
   public static final String PRIVACY_POLICY_URL = "/privacy-policy";
   public static final String TERMS_AND_CONDITIONS_URL = "/terms-and-conditions";
 
-  public static final String URLS = "urls";
   public static final String ERROR = "error";
+  public static final String EMAIL_LINK = "link";
+  public static final String URLS = "urls";
+  public static final String IMAGE_URL = "imageUrl";
+  public static final String IMAGE_URL_INLINE = "imageUrlInline";
+  public static final String EMAIL_VERIFY_TEMPLATE = "email/verify-email";
+  public static final String MAIL_SUCCESS_MESSAGE = "Mail successfully sent!";
+  public static final String MAIL_ERROR_MESSAGE = "There was an error sending mail!";
+  public static final String INVALID_TOKEN = "Invalid Token";
+  public static final String MESSAGE = "message";
+  public static final String DOCUMENT = "document";
+  public static final String EMAIL_WELCOME_TEMPLATE = "email/welcome";
 
   /**
    * View Name Constants.

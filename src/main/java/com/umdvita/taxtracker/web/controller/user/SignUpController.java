@@ -82,7 +82,6 @@ public class SignUpController {
   public String signUp(
           @Valid @ModelAttribute final UserRequestModel userRequestModel,
           final Model model, HttpServletRequest httpServletRequest) {
-    InputValidationUtility.validateInputs(getClass(), userRequestModel);
     LOG.debug("In signUpController to create user with details {}", userRequestModel);
 
     UserDto userDto = UserUtility.getUserDto(userRequestModel);
@@ -90,7 +89,6 @@ public class SignUpController {
     if (isUsernameOrEmailADuplicate(userDto, model)) {
       return SignUpControllerConstant.SIGN_UP_VIEW_NAME;
     }
-    // Assign roles to the userDto and successfully createQuestion userDto to database
     // Returns false if there was an error.
     UserDto storedUserDto = assignRolesAndCreateUser(userDto);
     if (Objects.isNull(storedUserDto)) {
@@ -136,7 +134,6 @@ public class SignUpController {
    * @return status if an error occurred with the specified plan
    */
   private UserDto assignRolesAndCreateUser(final UserDto userDto) {
-    LOG.debug("About to assign roles and create user {}", userDto);
     try {
       Set<Role> roles = new HashSet<>();
       roles.add(new Role(RoleType.USER));

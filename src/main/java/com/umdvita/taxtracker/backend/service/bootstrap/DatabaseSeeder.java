@@ -92,10 +92,8 @@ public class DatabaseSeeder implements CommandLineRunner {
    * @param activeProfiles the activeProfiles
    */
   private void populateRoles(List<String> activeProfiles) {
-    if (!activeProfiles.contains(ProfileType.TEST)) {
-      List<RoleType> roleTypes = Arrays.asList(RoleType.values());
-      roleTypes.forEach(roleEnum -> roleService.saveRole(new Role(roleEnum)));
-    }
+    List<RoleType> roleTypes = Arrays.asList(RoleType.values());
+    roleTypes.forEach(roleEnum -> roleService.saveRole(new Role(roleEnum)));
   }
 
   /**

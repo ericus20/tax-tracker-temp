@@ -219,7 +219,7 @@ public class UserServiceImpl implements UserService {
   private void preparerUserDetails(UserDto userDto) {
     encryptPassword = new Thread(() -> userDto.setPassword(encryptionService.encryptText(userDto.getPassword())));
     encryptPassword.start();
-    userDto.setToken(UserUtility.generateToken());
+    userDto.setToken(UserUtility.generateToken(userDto.getEmail()));
     if (UserUtility.isValidSsn(userDto.getSsn())) {
       userDto.setLast4Ssn(encryptionService.encodeText(UserUtility.getLast4Ssn(userDto.getSsn())));
       userDto.setSsn(encryptionService.encodeText(userDto.getSsn()));

@@ -42,6 +42,10 @@ public abstract class UserConstant {
    * Model messages.
    */
   public static final String USER_DELETE_MESSAGE = "User successfully deleted";
+  public static final String PASSWORD_TOKEN_SUCCESS = "Successfully created token {} for user {}";
+  public static final String USER_NOT_FOUND_BY_EMAIL_LOG = "User with email {} is not found in our records";
+  public static final String USER_NOT_FOUND_BY_EMAIL = "No user found with the specified email";
+  public static final String USER_NOT_FOUND_BY_USERNAME = "No user found with the specified username";
 
   private UserConstant() {
     throw new AssertionError("Non Instantiable");

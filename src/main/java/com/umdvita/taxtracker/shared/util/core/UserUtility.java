@@ -12,7 +12,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.springframework.beans.BeanUtils;
 
 import java.security.SecureRandom;
 import java.time.LocalDate;
@@ -34,6 +33,7 @@ public abstract class UserUtility {
 
   public static final String CHARACTER_SET = "0123456789abcdefghijklmnopqrstuvwszABCDEFGHIJKLMNOPQRSTUVWXYZ";
   public static final Random RANDOM = new SecureRandom();
+  static Faker faker = new Faker();
   public static final String EMAIL = "@email.com";
   private static final int LENGTH = 30;
   private static final int LAST_4 = 4;
@@ -45,6 +45,10 @@ public abstract class UserUtility {
 
   public static String generateRandomId() {
     return generateRandomString(LENGTH);
+  }
+
+  public static String generateToken(String email) {
+    return generateRandomString(email.length());
   }
 
   public static String generateToken() {
@@ -65,11 +69,11 @@ public abstract class UserUtility {
   }
 
   public static String generateSsn() {
-    return String.format("%09d", RANDOM.nextInt(1_000_000_000) + 1_000_000_00);
+    return faker.idNumber().ssnValid();
   }
 
   public static String generatePhone() {
-    return String.valueOf((long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L);
+    return faker.phoneNumber().phoneNumber();
   }
 
   public static String generateDob() {
@@ -88,7 +92,7 @@ public abstract class UserUtility {
     }
     // SSN could have the form xxx-xx-xxxx and may begin with "," due to input masking
     ssn = ssn.strip().replaceAll("[-,]", "");
-    return StringUtils.isNotBlank(ssn) && ssn.length() == 9 && NumberUtils.isCreatable(ssn);
+    return StringUtils.isNotBlank(ssn) && ssn.length() == 9 && NumberUtils.isParsable(ssn);
   }
 
   /**
@@ -115,7 +119,6 @@ public abstract class UserUtility {
    * @return the user dto
    */
   public static UserDto createTestUser(String username, String password, boolean requiredFields, boolean enable) {
-    Faker faker = new Faker();
     UserDto userDto = new UserDto();
     userDto.setUsername(username);
     userDto.setPassword(password);

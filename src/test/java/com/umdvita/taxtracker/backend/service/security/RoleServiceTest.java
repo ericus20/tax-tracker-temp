@@ -39,7 +39,7 @@ class RoleServiceTest {
     Optional<Role> optionalRole = roleService.saveRole(new Role(RoleType.USER));
     Assertions.assertTrue(optionalRole.isPresent());
 
-    Optional<Role> roleByName = roleService.getRoleByName(optionalRole.get().getName());
+    Optional<Role> roleByName = roleService.getRoleByName(RoleType.USER.getName());
     Assertions.assertTrue(roleByName.isPresent());
     Assertions.assertEquals(optionalRole.get(), roleByName.get());
   }

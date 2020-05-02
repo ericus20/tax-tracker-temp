@@ -1,12 +1,14 @@
 package com.umdvita.taxtracker.config;
 
 import com.umdvita.taxtracker.backend.persistence.domain.base.TaxTrackerAuditorAware;
+import com.umdvita.taxtracker.constant.ProfileType;
 import io.hypersistence.optimizer.HypersistenceOptimizer;
 import io.hypersistence.optimizer.core.config.JpaConfig;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -48,6 +50,7 @@ public class PersistenceConfig {
    * @return hypersistenceOptimizer {@link HypersistenceOptimizer @HypersistenceOptimizer}
    */
   @Bean
+  @Profile(ProfileType.PROD)
   public HypersistenceOptimizer hypersistenceOptimizer(EntityManagerFactory entityManagerFactory) {
     return new HypersistenceOptimizer(new JpaConfig(entityManagerFactory));
   }
