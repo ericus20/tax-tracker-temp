@@ -62,10 +62,12 @@ public abstract class ControllerConstant {
   public static final String REDIRECT_TO_TAX_DASHBOARD = "redirect:/tax/dashboard";
   public static final String REDIRECT_HOME = "redirect:/";
   public static final String REDIRECT_TO_LOGIN = "redirect:/login";
+  public static final String REDIRECT_TO_PROFILE = "redirect:/profile";
 
   /**
    * Model Key Constant for email success.
    */
+  public static final String NEW_PROFILE = "newProfile";
   public static final String USER_REQUEST_MODEL_KEY_NAME = "userRequestModel";
 
   /**
@@ -98,6 +100,7 @@ public abstract class ControllerConstant {
   public static final String MORE_ON_TAXES = "/more-on-taxes/**";
   public static final String CONSOLE = "/console/**";
   public static final String SIGN_UP = "/sign-up/**";
+  public static final String COMPLETE_SIGN_UP = "/complete-sign-up/**";
   public static final String EXPIRED_URL = "/expired-url";
   public static final String ROOT = "/";
   public static final String X_FORWARDED_PROTO = "X-Forwarded-Proto";

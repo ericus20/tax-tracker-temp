@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -115,12 +116,40 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
     String body = templateEngine.process(emailFormat.getTemplate(), emailFormat.getContext());
     mimeMessageHelper.setText(body, true);
     mimeMessageHelper.setSubject(emailFormat.getSubject());
-    // TODO: 4/26/2020 setup the senders address with the given name
+    // setup the senders address with the given name
+    setFromAndReplyTo(emailFormat, mimeMessageHelper);
 
     if (withAttachment && Objects.nonNull(emailFormat.getFiles())) {
       addAttachments(emailFormat, mimeMessageHelper);
     }
 
     return mimeMessage;
+  }
+
+  /**
+   * Setup the senders address using Internet Address.
+   *
+   * @param emailFormat the email format
+   * @param helper      the mime message helper
+   * @throws UnsupportedEncodingException if there is any issue with encoding
+   * @throws MessagingException           if there is any exception processing the message
+   */
+  private void setFromAndReplyTo(EmailFormat emailFormat, MimeMessageHelper helper)
+          throws UnsupportedEncodingException, MessagingException {
+    // TODO: 5/2/2020 Update setup
+    InternetAddress internetAddress;
+    if (Objects.nonNull(emailFormat.getFrom()) && Objects.nonNull(emailFormat.getSender())) {
+      internetAddress = new InternetAddress(emailFormat.getFrom(), emailFormat.getSender().getName());
+    } else {
+      internetAddress = new InternetAddress(applicationProperties.getWebmasterEmail(), "UMD VITA");
+    }
+
+    helper.setFrom(String.valueOf(internetAddress));
+    helper.setReplyTo(internetAddress);
+    if (Objects.nonNull(emailFormat.getReceiver())) {
+      internetAddress = new InternetAddress(emailFormat.getTo(), emailFormat.getReceiver().getName());
+      helper.setTo(internetAddress);
+    }
+    helper.setTo(internetAddress);
   }
 }

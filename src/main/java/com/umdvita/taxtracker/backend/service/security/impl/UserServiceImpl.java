@@ -7,9 +7,12 @@ import com.umdvita.taxtracker.backend.persistence.domain.security.user.UserHisto
 import com.umdvita.taxtracker.backend.persistence.repository.security.UserRepository;
 import com.umdvita.taxtracker.backend.service.security.EncryptionService;
 import com.umdvita.taxtracker.backend.service.security.UserService;
+import com.umdvita.taxtracker.constant.UserConstant;
 import com.umdvita.taxtracker.enums.RoleType;
 import com.umdvita.taxtracker.enums.UserHistoryType;
+import com.umdvita.taxtracker.exception.user.UserNotFoundException;
 import com.umdvita.taxtracker.shared.dto.UserDto;
+import com.umdvita.taxtracker.shared.dto.UserUpdateDto;
 import com.umdvita.taxtracker.shared.util.core.UserUtility;
 import com.umdvita.taxtracker.shared.util.validation.InputValidationUtility;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +81,7 @@ public class UserServiceImpl implements UserService {
       // setup the name and other details provided by the user
       preparerUserDetails(userDto);
       // transfer user details to a user object then persist to database.
-      return persistUserDetails(userDto, roles, UserHistoryType.CREATED);
+      return persistUserDetails(UserUtility.getUserUpdateDto(userDto), roles, UserHistoryType.CREATED);
     }
     return null;
   }
@@ -181,6 +184,100 @@ public class UserServiceImpl implements UserService {
   }
 
   /**
+   * Update the user with the user instance given.
+   *
+   * @param userUpdateDto The user with updated information
+   * @return the updated user
+   * @throws IllegalArgumentException in case the given entity is
+   *                                  {@literal null}
+   */
+  @Override
+  @Transactional
+  public UserUpdateDto updateUser(UserUpdateDto userUpdateDto) {
+    InputValidationUtility.validateInputs(getClass(), userUpdateDto);
+    return updateUser(userUpdateDto, UserHistoryType.PROFILE_UPDATE);
+  }
+
+  /**
+   * Update the user with the user instance given and the update type for record.
+   *
+   * @param userUpdateDto   The user with updated information
+   * @param userHistoryType the history type to be recorded
+   * @return the updated user
+   * @throws IllegalArgumentException in case the given entity is
+   *                                  {@literal null}
+   */
+  @Override
+  @Transactional
+  public UserUpdateDto updateUser(UserUpdateDto userUpdateDto, UserHistoryType userHistoryType) {
+    InputValidationUtility.validateInputs(getClass(), userUpdateDto, userHistoryType);
+
+    if (userRepository.existsByEmailOrderById(userUpdateDto.getEmail())) {
+      preparerUserDetails(userUpdateDto);
+      UserUtility.enableUser(userUpdateDto);
+      return persistUserDetails(userUpdateDto, userUpdateDto.getRoles(), userHistoryType);
+    }
+
+    throw new UserNotFoundException(UserConstant.USER_NOT_FOUND_BY_EMAIL);
+  }
+
+  /**
+   * Update the user with the user instance given, the role and the update type for record.
+   *
+   * @param userDto         The email of the user
+   * @param userHistoryType the history type to be recorded
+   * @return the updated user
+   * @throws IllegalArgumentException in case the given entity is
+   *                                  {@literal null}
+   */
+  @Override
+  @Transactional
+  public UserUpdateDto updateUser(UserDto userDto, UserHistoryType userHistoryType) {
+    InputValidationUtility.validateInputs(getClass(), userDto, userHistoryType);
+    UserUpdateDto userUpdateDto = UserUtility.getUserUpdateDto(userDto);
+    return updateUser(userUpdateDto, userHistoryType);
+  }
+
+  /**
+   * Update the user with the user instance given, the role and the update type for record.
+   *
+   * @param email           The email of the user
+   * @param userRoles       the userDto roles assigned to the userDto
+   * @param userHistoryType the history type to be recorded
+   * @return the updated user
+   * @throws IllegalArgumentException in case the given entity is
+   *                                  {@literal null}
+   */
+  @Override
+  @Transactional
+  public UserUpdateDto updateUser(String email, Set<Role> userRoles, UserHistoryType userHistoryType) {
+    InputValidationUtility.validateInputs(getClass(), email, userRoles, userHistoryType);
+    UserUpdateDto userUpdateDto = new UserUpdateDto(email);
+    userUpdateDto.getRoles().addAll(userRoles);
+    return updateUser(userUpdateDto, userHistoryType);
+  }
+
+  /**
+   * Enables the user after verifying an account.
+   *
+   * @param email the user email
+   * @return true if enabled
+   */
+  @Override
+  @Transactional
+  public boolean enableUser(String email) {
+    InputValidationUtility.validateInputs(getClass(), email);
+    User user = userRepository.getOneByEmail(email);
+    if (Objects.nonNull(user)) {
+      UserUtility.enableUser(user);
+      user.addUserHistory(new UserHistory(UserHistoryType.VERIFIED, user));
+      return true;
+    }
+    LOG.debug(UserConstant.USER_NOT_FOUND_BY_EMAIL_LOG, email);
+    throw new UserNotFoundException(UserConstant.USER_NOT_FOUND_BY_EMAIL);
+  }
+
+  /**
    * Locates the user based on the username. In the actual implementation, the search
    * may possibly be case sensitive, or case insensitive depending on how the
    * implementation instance is configured. In this case, the <code>UserDetails</code>
@@ -198,7 +295,7 @@ public class UserServiceImpl implements UserService {
     if (StringUtils.isNotBlank(email)) {
       User user = userRepository.getOneByEmail(email);
       if (Objects.isNull(user)) {
-        LOG.warn("No record found for user with email {}", email);
+        LOG.warn(UserConstant.USER_NOT_FOUND_BY_EMAIL_LOG, email);
         throw new UsernameNotFoundException("User with email " + email + " not found");
       }
       List<SimpleGrantedAuthority> authorities = user.getRoles()
@@ -217,8 +314,10 @@ public class UserServiceImpl implements UserService {
    * @param userDto the userDto
    */
   private void preparerUserDetails(UserDto userDto) {
-    encryptPassword = new Thread(() -> userDto.setPassword(encryptionService.encryptText(userDto.getPassword())));
-    encryptPassword.start();
+    if (StringUtils.isNotBlank(userDto.getPassword())) {
+      encryptPassword = new Thread(() -> userDto.setPassword(encryptionService.encryptText(userDto.getPassword())));
+      encryptPassword.start();
+    }
     userDto.setToken(UserUtility.generateToken(userDto.getEmail()));
     if (UserUtility.isValidSsn(userDto.getSsn())) {
       userDto.setLast4Ssn(encryptionService.encodeText(UserUtility.getLast4Ssn(userDto.getSsn())));
@@ -235,21 +334,21 @@ public class UserServiceImpl implements UserService {
   /**
    * Transfers user details to a user object then persist to database.
    *
-   * @param userDto         the userDto
-   * @param roles           the roles
-   * @param userHistoryType the user history type
-   * @return the userDto
+   * @param userUpdateDto the userUpdateDto
+   * @param roles         the roles
+   * @param historyType   the user history type
+   * @return the userUpdateDto
    */
-  private UserDto persistUserDetails(UserDto userDto, Set<Role> roles, UserHistoryType userHistoryType) {
-    User localUser = UserUtility.getUserFromDto(userDto);
-    localUser.addUserHistory(new UserHistory(userHistoryType, localUser));
+  private UserUpdateDto persistUserDetails(UserUpdateDto userUpdateDto, Set<Role> roles, UserHistoryType historyType) {
+    User localUser = UserUtility.getUserFromUpdatedDto(userUpdateDto);
+    localUser.addUserHistory(new UserHistory(historyType, localUser));
     if (Objects.isNull(roles) || roles.isEmpty()) {
       roles = Collections.singleton(new Role(RoleType.USER));
     }
-    localUser.setRoles(roles);
+    localUser.getRoles().addAll(roles);
     localUser = userRepository.save(localUser);
     LOG.debug("User successfully persisted as {}", localUser);
-    return UserUtility.getUserDto(localUser);
+    return UserUtility.getUserUpdateDto(localUser);
   }
 
   private void executeThreadJoin() {

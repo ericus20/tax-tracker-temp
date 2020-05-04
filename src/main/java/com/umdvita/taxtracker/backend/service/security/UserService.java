@@ -1,7 +1,9 @@
 package com.umdvita.taxtracker.backend.service.security;
 
 import com.umdvita.taxtracker.backend.persistence.domain.security.Role;
+import com.umdvita.taxtracker.enums.UserHistoryType;
 import com.umdvita.taxtracker.shared.dto.UserDto;
+import com.umdvita.taxtracker.shared.dto.UserUpdateDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -19,9 +21,9 @@ public interface UserService extends UserDetailsService {
   /**
    * Create the user with the user details given.
    *
-   * @param userDto   the user with updated information
-   * @param roles     the user roles assigned to the userDto
-   * @return          the created userDto.
+   * @param userDto the user with updated information
+   * @param roles   the user roles assigned to the userDto
+   * @return the created userDto.
    * @throws IllegalArgumentException in case the given entity is {@literal null}
    */
   UserDto createUser(UserDto userDto, Set<Role> roles);
@@ -29,7 +31,7 @@ public interface UserService extends UserDetailsService {
   /**
    * Create the user with the user details given.
    *
-   * @param userDto   the user with updated information
+   * @param userDto the user with updated information
    * @return the created userDto.
    * @throws IllegalArgumentException in case the given entity is {@literal null}
    */
@@ -78,4 +80,56 @@ public interface UserService extends UserDetailsService {
    * @return <code>true</code> if email exists and enabled
    */
   boolean existsByEmailAndEnabled(String email);
+
+  /**
+   * Update the user with the user instance given.
+   *
+   * @param userUpdateDto The user with updated information
+   * @return the updated user
+   * @throws IllegalArgumentException in case the given entity is
+   *                                  {@literal null}
+   */
+  UserUpdateDto updateUser(UserUpdateDto userUpdateDto);
+
+  /**
+   * Update the user with the user instance given and the update type for record.
+   *
+   * @param userUpdateDto   The user with updated information
+   * @param userHistoryType the history type to be recorded
+   * @return the updated user
+   * @throws IllegalArgumentException in case the given entity is
+   *                                  {@literal null}
+   */
+  UserUpdateDto updateUser(UserUpdateDto userUpdateDto, UserHistoryType userHistoryType);
+
+  /**
+   * Update the user with the user instance given, the role and the update type for record.
+   *
+   * @param userDto         The email of the user
+   * @param userHistoryType the history type to be recorded
+   * @return the updated user
+   * @throws IllegalArgumentException in case the given entity is
+   *                                  {@literal null}
+   */
+  UserUpdateDto updateUser(UserDto userDto, UserHistoryType userHistoryType);
+
+  /**
+   * Update the user with the user instance given, the role and the update type for record.
+   *
+   * @param email           The email of the user
+   * @param userRoles       the userDto roles assigned to the userDto
+   * @param userHistoryType the history type to be recorded
+   * @return the updated user
+   * @throws IllegalArgumentException in case the given entity is
+   *                                  {@literal null}
+   */
+  UserUpdateDto updateUser(String email, Set<Role> userRoles, UserHistoryType userHistoryType);
+
+  /**
+   * Enables the user after verifying an account.
+   *
+   * @param email the user email
+   * @return true if enabled
+   */
+  boolean enableUser(String email);
 }

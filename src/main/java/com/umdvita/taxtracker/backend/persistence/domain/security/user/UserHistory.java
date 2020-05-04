@@ -13,7 +13,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import java.io.Serializable;
 
 /**
@@ -33,8 +32,7 @@ public class UserHistory extends BaseEntity<Long> implements Serializable {
   @Enumerated(EnumType.ORDINAL)
   private UserHistoryType userHistoryType;
 
-  @MapsId
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "user_id")
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private User user;
 

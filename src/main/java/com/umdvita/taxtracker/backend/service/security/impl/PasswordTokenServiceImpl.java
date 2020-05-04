@@ -8,7 +8,9 @@ import com.umdvita.taxtracker.backend.service.security.PasswordTokenService;
 import com.umdvita.taxtracker.constant.UserConstant;
 import com.umdvita.taxtracker.exception.UnAuthorizedActionException;
 import com.umdvita.taxtracker.exception.user.UserNotFoundException;
+import com.umdvita.taxtracker.shared.dto.PasswordTokenDto;
 import com.umdvita.taxtracker.shared.dto.UserDto;
+import com.umdvita.taxtracker.shared.util.core.PasswordTokenUtility;
 import com.umdvita.taxtracker.shared.util.core.UserUtility;
 import com.umdvita.taxtracker.shared.util.validation.InputValidationUtility;
 import lombok.extern.slf4j.Slf4j;
@@ -153,14 +155,14 @@ public class PasswordTokenServiceImpl implements PasswordTokenService {
    */
   @Override
   @Transactional
-  public PasswordToken validateUserToken(String token, String userId) {
+  public PasswordTokenDto validateUserToken(String token, String userId) {
     InputValidationUtility.validateInputs(getClass(), token, userId);
     PasswordToken passwordToken = passwordTokenRepository.getOneByToken(token);
     if (Objects.nonNull(passwordToken)) {
       User user = passwordToken.getUser();
       passwordTokenRepository.delete(passwordToken);
       if (Objects.nonNull(user) && user.getToken().equals(userId)) {
-        return passwordToken;
+        return PasswordTokenUtility.getPasswordTokenDto(passwordToken);
       }
       throw new UnAuthorizedActionException("Unauthorized access to password token");
     }

@@ -1,6 +1,7 @@
 package com.umdvita.taxtracker.backend.service.security;
 
 import com.umdvita.taxtracker.backend.persistence.domain.security.PasswordToken;
+import com.umdvita.taxtracker.shared.dto.PasswordTokenDto;
 import com.umdvita.taxtracker.shared.dto.UserDto;
 
 import java.util.List;
@@ -74,7 +75,7 @@ public interface PasswordTokenService {
    * @param userId        the userId
    * @return null if no match
    */
-  PasswordToken validateUserToken(String token, String userId);
+  PasswordTokenDto validateUserToken(String token, String userId);
 
   /**
    * Update token.

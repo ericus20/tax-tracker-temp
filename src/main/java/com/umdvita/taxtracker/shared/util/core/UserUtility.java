@@ -2,7 +2,10 @@ package com.umdvita.taxtracker.shared.util.core;
 
 import com.github.javafaker.Faker;
 import com.umdvita.taxtracker.backend.persistence.domain.security.user.User;
+import com.umdvita.taxtracker.backend.service.security.UserService;
+import com.umdvita.taxtracker.constant.ApplicationConstant;
 import com.umdvita.taxtracker.shared.dto.UserDto;
+import com.umdvita.taxtracker.shared.dto.UserUpdateDto;
 import com.umdvita.taxtracker.shared.dto.mapper.UserDtoMapper;
 import com.umdvita.taxtracker.shared.util.validation.InputValidationUtility;
 import com.umdvita.taxtracker.web.model.request.UserRequestModel;
@@ -12,6 +15,10 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.SecureRandom;
 import java.time.LocalDate;
@@ -22,7 +29,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * This utility class holds all security methods used in the application.
+ * This utility class holds all user shared methods used in the application.
  *
  * @author Eric Opoku
  * @version 1.0
@@ -37,10 +44,12 @@ public abstract class UserUtility {
   public static final String EMAIL = "@email.com";
   private static final int LENGTH = 30;
   private static final int LAST_4 = 4;
+  public static final String AUTHENTICATION_ERROR_MESSAGE = "Error authenticating user";
   private static final String UNAUTHORIZED_ACCESS_MESSAGE = "Unauthorized Access detected... User authentication "
           + "is null or anonymous. Returning to login page.";
 
   private UserUtility() {
+    throw new AssertionError(ApplicationConstant.ASSERTION_ERROR_MESSAGE);
   }
 
   public static String generateRandomId() {
@@ -170,6 +179,16 @@ public abstract class UserUtility {
   }
 
   /**
+   * Enables and unlocks a user.
+   *
+   * @param user the user
+   */
+  public static void enableUser(User user) {
+    InputValidationUtility.validateInputs(user);
+    user.setEnabled(true);
+  }
+
+  /**
    * Transfers data from entity to returnable object.
    *
    * @param storedUserDetails stored user details
@@ -206,6 +225,28 @@ public abstract class UserUtility {
   }
 
   /**
+   * Transfers data from request model to dto.
+   *
+   * @param storedUserDetails stored user details
+   * @return user dto
+   */
+  public static UserUpdateDto getUserUpdateDto(User storedUserDetails) {
+    InputValidationUtility.validateInputs(storedUserDetails);
+    return UserDtoMapper.MAPPER.toUserUpdateDto(storedUserDetails);
+  }
+
+  /**
+   * Transfers data from request model to dto.
+   *
+   * @param userDto stored user details
+   * @return user dto
+   */
+  public static UserUpdateDto getUserUpdateDto(UserDto userDto) {
+    InputValidationUtility.validateInputs(userDto);
+    return UserDtoMapper.MAPPER.toUserUpdateDto(userDto);
+  }
+
+  /**
    * Transfers data from entity to returnable object.
    *
    * @param userDto the userDto
@@ -214,5 +255,26 @@ public abstract class UserUtility {
   public static User getUserFromDto(UserDto userDto) {
     InputValidationUtility.validateInputs(userDto);
     return UserDtoMapper.MAPPER.toUser(userDto);
+  }
+
+  /**
+   * Transfers data from entity to returnable object.
+   *
+   * @param userUpdateDto the userUpdateDto
+   * @return user
+   */
+  public static User getUserFromUpdatedDto(UserUpdateDto userUpdateDto) {
+    InputValidationUtility.validateInputs(userUpdateDto);
+    return UserDtoMapper.MAPPER.toUser(userUpdateDto);
+  }
+
+  public static void authenticateUser(UserService userService, String email) {
+    UserDetails userDetails = userService.loadUserByUsername(email);
+    if (Objects.nonNull(userDetails)) {
+      Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails,
+              userDetails.getPassword(), userDetails.getAuthorities());
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+      LOG.debug("Authentication instantiated as {}", authentication);
+    }
   }
 }

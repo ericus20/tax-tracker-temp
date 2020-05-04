@@ -1,5 +1,6 @@
 package com.umdvita.taxtracker.shared.util.core;
 
+import com.umdvita.taxtracker.constant.ApplicationConstant;
 import com.umdvita.taxtracker.constant.ControllerConstant;
 import com.umdvita.taxtracker.shared.util.validation.InputValidationUtility;
 import com.umdvita.taxtracker.web.model.feedback.EmailFormat;
@@ -28,7 +29,7 @@ public abstract class WebUtility {
   private static final String COPY_ABOUT_US = "/copy/about-us";
 
   private WebUtility() {
-    throw new AssertionError("Non instantiable");
+    throw new AssertionError(ApplicationConstant.ASSERTION_ERROR_MESSAGE);
   }
 
   /**
